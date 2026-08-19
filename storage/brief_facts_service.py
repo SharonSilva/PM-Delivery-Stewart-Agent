@@ -86,10 +86,13 @@ def extract_brief_facts(snapshot: Snapshot) -> BriefFacts:
             ))
     blockers.sort(key=lambda b: b.days_blocked, reverse=True)
 
+    item_titles = {item.id: item.title for item in snapshot.items}
+
     return BriefFacts(
         sprint_name=SPRINT_2_NAME,
         sprint_day=sprint_day,
         sprint_total_days=sprint_total_days,
         people=list(people_map.values()),
         blockers=blockers,
+        item_titles=item_titles,
     )
