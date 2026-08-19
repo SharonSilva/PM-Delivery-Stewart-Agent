@@ -1,0 +1,51 @@
+{
+    "meeting_outcomes": [
+    {
+      "id": "MO-001",
+      "meeting_date": "2026-08-18T15:00:00",
+      "attendees": ["Bob Martinez", "Priya Sharma", "Andreas (delivery lead)"],
+      "consent": true,
+      "decisions": [
+        {
+          "text": "Prioritize the production memory leak fix (T-019) above all other Sprint 2 work",
+          "source_ref": "T-019"
+        }
+      ],
+      "actions": [
+        {
+          "text": "Priya Sharma to deploy the memory leak fix to production by end of day Aug 19",
+          "person": "Priya Sharma",
+          "due_date": "2026-08-19",
+          "source_ref": "T-019"
+        }
+      ],
+      "risks": [
+        {
+          "text": "If the memory leak fix isn't deployed by Aug 19, the service may need a manual restart to stay stable",
+          "source_ref": "T-019"
+        }
+      ]
+    },
+    {
+      "id": "MO-002",
+      "meeting_date": "2026-08-17T10:00:00",
+      "attendees": ["Bob Martinez", "Sam Okafor"],
+      "consent": false,
+      "decisions": [
+        {
+          "text": "Sam Okafor to be reassigned from notification service work to help with pagination bug fix",
+          "source_ref": "T-011"
+        }
+      ],
+      "actions": [
+        {
+          "text": "Sam Okafor to pick up T-004 pagination bug fix starting Aug 18",
+          "person": "Sam Okafor",
+          "due_date": "2026-08-20",
+          "source_ref": "T-004"
+        }
+      ],
+      "risks": []
+    }
+  ]
+}
