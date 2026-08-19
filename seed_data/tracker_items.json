@@ -3,22 +3,202 @@
     {
       "id": "T-001",
       "title": "Set up CI pipeline",
-      "status": "In Progress",
-      "assignee": "Alice",
+      "status": "Done",
+      "assignee": "Alice Chen",
       "priority": "High",
       "sprint": "Sprint 1",
       "blocked": false,
-      "created_at": "2026-08-10T09:00:00Z"
+      "created_at": "2026-08-03T09:00:00"
     },
     {
       "id": "T-002",
       "title": "Design login page",
+      "status": "In Progress",
+      "assignee": "Jordan Lee",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-04T09:00:00"
+    },
+    {
+      "id": "T-003",
+      "title": "Implement OAuth flow",
       "status": "Blocked",
-      "assignee": "Bob",
+      "assignee": "Bob Martinez",
+      "priority": "High",
+      "sprint": "Sprint 1",
+      "blocked": true,
+      "created_at": "2026-08-12T09:00:00"
+    },
+    {
+      "id": "T-004",
+      "title": "Fix pagination bug",
+      "status": "Blocked",
+      "assignee": "Sam Okafor",
       "priority": "Medium",
       "sprint": "Sprint 1",
       "blocked": true,
-      "created_at": "2026-08-11T10:30:00Z"
+      "created_at": "2026-08-17T09:00:00"
+    },
+    {
+      "id": "T-005",
+      "title": "Refactor payment service",
+      "status": "Done",
+      "assignee": "Priya Sharma",
+      "priority": "High",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-05T09:00:00"
+    },
+    {
+      "id": "T-006",
+      "title": "Write API docs",
+      "status": "In Progress",
+      "assignee": null,
+      "priority": "Low",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-06T09:00:00"
+    },
+    {
+      "id": "T-007",
+      "title": "Update dependency versions",
+      "status": "waiting on design",
+      "assignee": "Priya Nair",
+      "priority": "Low",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-07T09:00:00"
+    },
+    {
+      "id": "T-008",
+      "title": "Add rate limiting",
+      "status": "In Progress",
+      "assignee": "Alice Chen",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-08T09:00:00"
+    },
+    {
+      "id": "T-009",
+      "title": "Set up staging environment",
+      "status": "Done",
+      "assignee": "Bob Martinez",
+      "priority": "High",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-09T09:00:00"
+    },
+    {
+      "id": "T-010",
+      "title": "Write onboarding guide",
+      "status": "Open",
+      "assignee": "Jordan Lee",
+      "priority": "Low",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-10T09:00:00"
+    },
+    {
+      "id": "T-011",
+      "title": "Notification service integration",
+      "status": "Open",
+      "assignee": "Sam Okafor",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-16T09:00:00"
+    },
+    {
+      "id": "T-012",
+      "title": "Write unit tests for auth module",
+      "status": "In Progress",
+      "assignee": "Priya Nair",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-11T09:00:00"
+    },
+    {
+      "id": "T-013",
+      "title": "Set up monitoring dashboards",
+      "status": "Done",
+      "assignee": "Priya Sharma",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-12T09:00:00"
+    },
+    {
+      "id": "T-014",
+      "title": "Clean up legacy config files",
+      "status": "Open",
+      "assignee": "Sam Okafor",
+      "priority": "Low",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-03T09:00:00"
+    },
+    {
+      "id": "T-015",
+      "title": "Investigate flaky test suite",
+      "status": "In Progress",
+      "assignee": "Bob Martinez",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-13T09:00:00"
+    },
+    {
+      "id": "T-016",
+      "title": "Sprint 1 retro notes",
+      "status": "Done",
+      "assignee": "Jordan Lee",
+      "priority": "Low",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-14T09:00:00"
+    },
+    {
+      "id": "T-017",
+      "title": "Set up feature flag system",
+      "status": "Open",
+      "assignee": "Alice Chen",
+      "priority": "Medium",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-17T09:00:00"
+    },
+    {
+      "id": "T-018",
+      "title": "Migrate database schema",
+      "status": "In Progress",
+      "assignee": "Bob Martinez",
+      "priority": "High",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-18T09:00:00"
+    },
+    {
+      "id": "T-019",
+      "title": "Urgent: fix production memory leak",
+      "status": "Open",
+      "assignee": "Priya Sharma",
+      "priority": "High",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-18T09:00:00"
+    },
+    {
+      "id": "T-020",
+      "title": "Add audit logging for compliance",
+      "status": "Open",
+      "assignee": "Jordan Lee",
+      "priority": "Medium",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-18T09:00:00"
     }
   ],
   "transitions": [
@@ -26,25 +206,259 @@
       "item_id": "T-001",
       "from_status": null,
       "to_status": "Open",
-      "timestamp": "2026-08-10T09:00:00Z"
+      "timestamp": "2026-08-03T09:00:00"
     },
     {
       "item_id": "T-001",
       "from_status": "Open",
       "to_status": "In Progress",
-      "timestamp": "2026-08-11T09:00:00Z"
+      "timestamp": "2026-08-04T09:00:00"
+    },
+    {
+      "item_id": "T-001",
+      "from_status": "In Progress",
+      "to_status": "Done",
+      "timestamp": "2026-08-05T09:00:00"
     },
     {
       "item_id": "T-002",
       "from_status": null,
       "to_status": "Open",
-      "timestamp": "2026-08-11T10:30:00Z"
+      "timestamp": "2026-08-04T09:00:00"
     },
     {
       "item_id": "T-002",
       "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-05T09:00:00"
+    },
+    {
+      "item_id": "T-003",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-14T09:00:00"
+    },
+    {
+      "item_id": "T-003",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-12T09:00:00"
+    },
+    {
+      "item_id": "T-003",
+      "from_status": "In Progress",
       "to_status": "Blocked",
-      "timestamp": "2026-08-12T14:00:00Z"
+      "timestamp": "2026-08-14T11:00:00"
+    },
+    {
+      "item_id": "T-004",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-17T09:00:00"
+    },
+    {
+      "item_id": "T-004",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-15T10:00:00"
+    },
+    {
+      "item_id": "T-004",
+      "from_status": "In Progress",
+      "to_status": "Blocked",
+      "timestamp": "2026-08-17T15:00:00"
+    },
+    {
+      "item_id": "T-005",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-05T09:00:00"
+    },
+    {
+      "item_id": "T-005",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-05T09:00:00"
+    },
+    {
+      "item_id": "T-005",
+      "from_status": "In Progress",
+      "to_status": "Done",
+      "timestamp": "2026-08-17T16:00:00"
+    },
+    {
+      "item_id": "T-005",
+      "from_status": "Done",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-18T10:30:00"
+    },
+    {
+      "item_id": "T-005",
+      "from_status": "In Progress",
+      "to_status": "Blocked",
+      "timestamp": "2026-08-18T14:15:00"
+    },
+    {
+      "item_id": "T-005",
+      "from_status": "Blocked",
+      "to_status": "Done",
+      "timestamp": "2026-08-18T16:45:00"
+    },
+    {
+      "item_id": "T-006",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-06T09:00:00"
+    },
+    {
+      "item_id": "T-006",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-07T09:00:00"
+    },
+    {
+      "item_id": "T-007",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-07T09:00:00"
+    },
+    {
+      "item_id": "T-007",
+      "from_status": "Open",
+      "to_status": "waiting on design",
+      "timestamp": "2026-08-08T09:00:00"
+    },
+    {
+      "item_id": "T-008",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-08T09:00:00"
+    },
+    {
+      "item_id": "T-008",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-09T09:00:00"
+    },
+    {
+      "item_id": "T-009",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-09T09:00:00"
+    },
+    {
+      "item_id": "T-009",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-10T09:00:00"
+    },
+    {
+      "item_id": "T-009",
+      "from_status": "In Progress",
+      "to_status": "Done",
+      "timestamp": "2026-08-11T09:00:00"
+    },
+    {
+      "item_id": "T-010",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-10T09:00:00"
+    },
+    {
+      "item_id": "T-011",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-16T09:00:00"
+    },
+    {
+      "item_id": "T-012",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-11T09:00:00"
+    },
+    {
+      "item_id": "T-012",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-12T09:00:00"
+    },
+    {
+      "item_id": "T-013",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-12T09:00:00"
+    },
+    {
+      "item_id": "T-013",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-13T09:00:00"
+    },
+    {
+      "item_id": "T-013",
+      "from_status": "In Progress",
+      "to_status": "Done",
+      "timestamp": "2026-08-14T09:00:00"
+    },
+    {
+      "item_id": "T-014",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-03T09:00:00"
+    },
+    {
+      "item_id": "T-015",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-13T09:00:00"
+    },
+    {
+      "item_id": "T-015",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-14T09:00:00"
+    },
+    {
+      "item_id": "T-016",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-14T09:00:00"
+    },
+    {
+      "item_id": "T-016",
+      "from_status": "Open",
+      "to_status": "Done",
+      "timestamp": "2026-08-14T16:00:00"
+    },
+    {
+      "item_id": "T-017",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-17T09:00:00"
+    },
+    {
+      "item_id": "T-018",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-18T09:00:00"
+    },
+    {
+      "item_id": "T-018",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-18T09:30:00"
+    },
+    {
+      "item_id": "T-019",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-18T09:00:00"
+    },
+    {
+      "item_id": "T-020",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-18T09:00:00"
     }
   ]
 }
