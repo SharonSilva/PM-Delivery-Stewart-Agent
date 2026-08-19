@@ -16,6 +16,6 @@ class TrackerAdapter(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    def get_transition(self, since: Optional[datetime] = None) -> list[Transition]:
+    def get_transitions(self, since: Optional[datetime] = None) -> list[Transition]:
         """Return transition history optionlly filtered to transition at or after `since`."""
         raise NotImplementedError
