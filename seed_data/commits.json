@@ -1,0 +1,18 @@
+{
+  "commits": [
+    {
+      "hash": "a1b2c3d",
+      "item_id": "T-001",
+      "author": "Alice",
+      "message": "Add CI config",
+      "timestamp": "2026-08-11T11:00:00Z"
+    },
+    {
+      "hash": "e4f5g6h",
+      "item_id": null,
+      "author": "Bob",
+      "message": "Fix typo in README",
+      "timestamp": "2026-08-11T12:00:00Z"
+    }
+  ]
+}

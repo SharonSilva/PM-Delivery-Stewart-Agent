@@ -11,6 +11,6 @@ class Commit(BaseModel):
     item_id: Optional[str] = None
     author: str
     message: str
-    timetamp: datetime
+    timestamp: datetime
     
     
