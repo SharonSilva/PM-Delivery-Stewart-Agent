@@ -1,20 +1,14 @@
 {
   "messages": [
-    {
-      "id": "M-001",
-      "channel": "general",
-      "author": "Alice",
-      "text": "CI pipeline is coming along well",
-      "timestamp": "2026-08-11T13:00:00Z",
-      "item_id": "T-001"
-    },
-    {
-      "id": "M-002",
-      "channel": "general",
-      "author": "Bob",
-      "text": "Blocked on design review for login page",
-      "timestamp": "2026-08-12T09:00:00Z",
-      "item_id": "T-002"
-    }
+    {"id": "M-001", "channel": "general", "author": "Alice Chen", "text": "CI pipeline is fully green now", "timestamp": "2026-08-03T15:00:00", "item_id": "T-001"},
+    {"id": "M-002", "channel": "general", "author": "Bob Martinez", "text": "OAuth flow is trickier than expected, blocked on the provider's sandbox being down", "timestamp": "2026-08-14T11:30:00", "item_id": "T-003"},
+    {"id": "M-003", "channel": "dev", "author": "Priya Sharma", "text": "Payment refactor merged, deploying to staging now", "timestamp": "2026-08-06T10:00:00", "item_id": "T-005"},
+    {"id": "M-004", "channel": "dev", "author": "Priya Sharma", "text": "Found a regression in the payment refactor, reverting temporarily", "timestamp": "2026-08-18T14:20:00", "item_id": "T-005"},
+    {"id": "M-005", "channel": "dev", "author": "Priya Sharma", "text": "Fixed, redeployed and verified", "timestamp": "2026-08-18T17:00:00", "item_id": "T-005"},
+    {"id": "M-006", "channel": "general", "author": "Priya Nair", "text": "Unit tests for auth module are about 60% done", "timestamp": "2026-08-11T16:00:00", "item_id": "T-012"},
+    {"id": "M-007", "channel": "dev", "author": "Bob Martinez", "text": "Flaky test suite seems related to a race condition in the test setup", "timestamp": "2026-08-13T13:00:00", "item_id": "T-015"},
+    {"id": "M-008", "channel": "general", "author": "Jordan Lee", "text": "Posted sprint 1 retro notes, please add your thoughts", "timestamp": "2026-08-14T16:00:00", "item_id": "T-016"},
+    {"id": "M-009", "channel": "dev", "author": "Bob Martinez", "text": "Starting the database schema migration, will need a maintenance window", "timestamp": "2026-08-18T09:45:00", "item_id": "T-018"},
+    {"id": "M-010", "channel": "general", "author": "Priya Sharma", "text": "Production memory leak is urgent, prioritizing over everything else today", "timestamp": "2026-08-18T12:15:00", "item_id": "T-019"}
   ]
 }

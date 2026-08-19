@@ -1,0 +1,12 @@
+{
+  "commitments": [
+    {"id": "C-001", "person": "Bob Martinez", "description": "Finish OAuth flow implementation", "item_id": "T-003", "due_date": "2026-08-16", "due_date_text": null, "created_at": "2026-08-12T09:00:00"},
+    {"id": "C-002", "person": "Priya Sharma", "description": "Refactor payment service and deploy to staging", "item_id": "T-005", "due_date": null, "due_date_text": "by Friday", "created_at": "2026-08-14T10:00:00"},
+    {"id": "C-003", "person": "Alice Chen", "description": "Deploy rate limiting to production", "item_id": "T-008", "due_date": "2026-08-20", "due_date_text": null, "created_at": "2026-08-08T09:00:00"},
+    {"id": "C-004", "person": "Jordan Lee", "description": "Publish onboarding guide", "item_id": "T-010", "due_date": "2026-08-15", "due_date_text": null, "created_at": "2026-08-10T09:00:00"},
+    {"id": "C-005", "person": "Sam Okafor", "description": "Complete notification service integration", "item_id": "T-011", "due_date": "2026-08-19", "due_date_text": null, "created_at": "2026-08-16T09:00:00"},
+    {"id": "C-006", "person": "Priya Nair", "description": "Finish auth module unit tests", "item_id": "T-012", "due_date": "2026-08-15", "due_date_text": null, "created_at": "2026-08-11T09:00:00"},
+    {"id": "C-007", "person": "Bob Martinez", "description": "Fix flaky test suite", "item_id": "T-015", "due_date": "2026-08-18", "due_date_text": null, "created_at": "2026-08-13T09:00:00"},
+    {"id": "C-008", "person": "Priya Sharma", "description": "Deploy audit logging feature", "item_id": "T-020", "due_date": "2026-08-25", "due_date_text": null, "created_at": "2026-08-18T09:00:00"}
+  ]
+}
