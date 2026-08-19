@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Literal,Optional
 from pydantic import BaseModel
 
 class Commit(BaseModel):
@@ -12,5 +12,7 @@ class Commit(BaseModel):
     author: str
     message: str
     timestamp: datetime
+    branch: Optional[str] = None
+    pr_state: Optional[Literal["open", "merged","closed"]] = None
     
     
