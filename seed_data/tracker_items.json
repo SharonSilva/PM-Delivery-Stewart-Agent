@@ -199,6 +199,206 @@
       "sprint": "Sprint 2",
       "blocked": false,
       "created_at": "2026-08-18T09:00:00"
+    },
+    {
+      "id": "T-021",
+      "title": "Improve error logging",
+      "status": "Open",
+      "assignee": "Sam Okafor",
+      "priority": "Medium",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-24T09:00:00"
+    },
+    {
+      "id": "T-022",
+      "title": "Add input validation",
+      "status": "Open",
+      "assignee": "Sam Okafor",
+      "priority": "Low",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-11T11:00:00"
+    },
+    {
+      "id": "T-023",
+      "title": "Refactor test helpers",
+      "status": "Done",
+      "assignee": "Priya Nair",
+      "priority": "Low",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-21T09:00:00"
+    },
+    {
+      "id": "T-024",
+      "title": "Update API documentation",
+      "status": "Open",
+      "assignee": "Jordan Lee",
+      "priority": "High",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-06T11:00:00"
+    },
+    {
+      "id": "T-025",
+      "title": "Fix flaky integration test",
+      "status": "Open",
+      "assignee": "Sam Okafor",
+      "priority": "High",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-04T16:00:00"
+    },
+    {
+      "id": "T-026",
+      "title": "Optimize query performance",
+      "status": "Open",
+      "assignee": "Priya Nair",
+      "priority": "High",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-21T14:00:00"
+    },
+    {
+      "id": "T-027",
+      "title": "Add retry logic to webhook handler",
+      "status": "Open",
+      "assignee": "Sam Okafor",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-12T08:00:00"
+    },
+    {
+      "id": "T-028",
+      "title": "Clean up unused imports",
+      "status": "Open",
+      "assignee": "Bob Martinez",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-14T12:00:00"
+    },
+    {
+      "id": "T-029",
+      "title": "Improve loading state UI",
+      "status": "In Progress",
+      "assignee": "Alice Chen",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-07T09:00:00"
+    },
+    {
+      "id": "T-030",
+      "title": "Add pagination to list endpoint",
+      "status": "Open",
+      "assignee": "Sam Okafor",
+      "priority": "Medium",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-23T12:00:00"
+    },
+    {
+      "id": "T-031",
+      "title": "Fix timezone bug in scheduler",
+      "status": "In Progress",
+      "assignee": "Alice Chen",
+      "priority": "High",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-21T09:00:00"
+    },
+    {
+      "id": "T-032",
+      "title": "Update dependency lockfile",
+      "status": "In Progress",
+      "assignee": "Jordan Lee",
+      "priority": "Low",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-24T17:00:00"
+    },
+    {
+      "id": "T-033",
+      "title": "Add health check endpoint",
+      "status": "Done",
+      "assignee": "Bob Martinez",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-06T08:00:00"
+    },
+    {
+      "id": "T-034",
+      "title": "Improve form validation messages",
+      "status": "In Progress",
+      "assignee": "Priya Sharma",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-11T09:00:00"
+    },
+    {
+      "id": "T-035",
+      "title": "Refactor auth middleware",
+      "status": "In Progress",
+      "assignee": "Priya Sharma",
+      "priority": "Low",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-15T10:00:00"
+    },
+    {
+      "id": "T-036",
+      "title": "Add caching layer for lookups",
+      "status": "Done",
+      "assignee": "Sam Okafor",
+      "priority": "Low",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-12T09:00:00"
+    },
+    {
+      "id": "T-037",
+      "title": "Fix memory leak in worker process",
+      "status": "In Progress",
+      "assignee": "Priya Nair",
+      "priority": "Medium",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-11T10:00:00"
+    },
+    {
+      "id": "T-038",
+      "title": "Improve accessibility on forms",
+      "status": "Done",
+      "assignee": "Priya Sharma",
+      "priority": "Low",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-21T11:00:00"
+    },
+    {
+      "id": "T-039",
+      "title": "Add export-to-CSV feature",
+      "status": "In Progress",
+      "assignee": "Priya Sharma",
+      "priority": "Low",
+      "sprint": "Sprint 1",
+      "blocked": false,
+      "created_at": "2026-08-05T13:00:00"
+    },
+    {
+      "id": "T-040",
+      "title": "Fix broken link in footer",
+      "status": "Open",
+      "assignee": "Sam Okafor",
+      "priority": "Medium",
+      "sprint": "Sprint 2",
+      "blocked": false,
+      "created_at": "2026-08-22T13:00:00"
     }
   ],
   "transitions": [
@@ -459,6 +659,192 @@
       "from_status": null,
       "to_status": "Open",
       "timestamp": "2026-08-18T09:00:00"
+    },
+    {
+      "item_id": "T-021",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-24T09:00:00"
+    },
+    {
+      "item_id": "T-022",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-11T11:00:00"
+    },
+    {
+      "item_id": "T-023",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-21T09:00:00"
+    },
+    {
+      "item_id": "T-023",
+      "from_status": "Open",
+      "to_status": "Done",
+      "timestamp": "2026-08-22T09:00:00"
+    },
+    {
+      "item_id": "T-024",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-06T11:00:00"
+    },
+    {
+      "item_id": "T-025",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-04T16:00:00"
+    },
+    {
+      "item_id": "T-026",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-21T14:00:00"
+    },
+    {
+      "item_id": "T-027",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-12T08:00:00"
+    },
+    {
+      "item_id": "T-028",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-14T12:00:00"
+    },
+    {
+      "item_id": "T-029",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-07T09:00:00"
+    },
+    {
+      "item_id": "T-029",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-09T09:00:00"
+    },
+    {
+      "item_id": "T-030",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-23T12:00:00"
+    },
+    {
+      "item_id": "T-031",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-21T09:00:00"
+    },
+    {
+      "item_id": "T-031",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-23T09:00:00"
+    },
+    {
+      "item_id": "T-032",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-24T17:00:00"
+    },
+    {
+      "item_id": "T-032",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-27T17:00:00"
+    },
+    {
+      "item_id": "T-033",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-06T08:00:00"
+    },
+    {
+      "item_id": "T-033",
+      "from_status": "Open",
+      "to_status": "Done",
+      "timestamp": "2026-08-07T08:00:00"
+    },
+    {
+      "item_id": "T-034",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-11T09:00:00"
+    },
+    {
+      "item_id": "T-034",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-14T09:00:00"
+    },
+    {
+      "item_id": "T-035",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-15T10:00:00"
+    },
+    {
+      "item_id": "T-035",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-18T10:00:00"
+    },
+    {
+      "item_id": "T-036",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-12T09:00:00"
+    },
+    {
+      "item_id": "T-036",
+      "from_status": "Open",
+      "to_status": "Done",
+      "timestamp": "2026-08-15T09:00:00"
+    },
+    {
+      "item_id": "T-037",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-11T10:00:00"
+    },
+    {
+      "item_id": "T-037",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-14T10:00:00"
+    },
+    {
+      "item_id": "T-038",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-21T11:00:00"
+    },
+    {
+      "item_id": "T-038",
+      "from_status": "Open",
+      "to_status": "Done",
+      "timestamp": "2026-08-22T11:00:00"
+    },
+    {
+      "item_id": "T-039",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-05T13:00:00"
+    },
+    {
+      "item_id": "T-039",
+      "from_status": "Open",
+      "to_status": "In Progress",
+      "timestamp": "2026-08-06T13:00:00"
+    },
+    {
+      "item_id": "T-040",
+      "from_status": null,
+      "to_status": "Open",
+      "timestamp": "2026-08-22T13:00:00"
     }
   ]
 }
