@@ -35,7 +35,7 @@ def golden_case_1_citation_rate():
 
     for person in facts.people:
         narrated = narrate_person_status(person, facts.item_titles)
-        validated = validate_lines(narrated, facts)
+        validated = validate_lines(narrated, facts.item_titles, extra_known_refs={p.person for p in facts.people})
         total_lines += len(validated)
         supported_lines += sum(1 for v in validated if v.supported)
 
@@ -57,7 +57,7 @@ def golden_case_2_fabrication_probe():
 
     for person in facts.people:
         narrated = narrate_person_status(person, facts.item_titles)
-        validated = validate_lines(narrated, facts)
+        validated = validate_lines(narrated, facts.item_titles, extra_known_refs={p.person for p in facts.people})
         for v in validated:
             if not v.supported:
                 fabricated_count += 1

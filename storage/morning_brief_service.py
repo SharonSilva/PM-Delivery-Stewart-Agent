@@ -41,13 +41,13 @@ def generate_morning_brief(facts: BriefFacts) -> MorningBrief:
     person_lines: dict[str, list[str]] = {}
     for person in facts.people:
         narrated = narrate_person_status(person, facts.item_titles)
-        validated = drop_unsupported(validate_lines(narrated, facts))
+        validated = drop_unsupported(validate_lines(narrated, facts.item_titles, extra_known_refs={p.person for p in facts.people}))
         person_lines[person.person] = [line.text for line in validated]
 
     blocker_lines: dict[str, str] = {}
     for blocker in facts.blockers:
         narrated = narrate_blocker(blocker)
-        validated = drop_unsupported(validate_lines(narrated, facts))
+        validated = drop_unsupported(validate_lines(narrated, facts.item_titles, extra_known_refs={p.person for p in facts.people}))
         if validated:
             blocker_lines[blocker.item_id] = validated[0].text
 
