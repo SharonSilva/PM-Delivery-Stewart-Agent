@@ -1,0 +1,7 @@
+Eval run at 2026-08-20T08:31:07.443819
+
+[PASS] Golden Case 1: Citation rate: measured=1.0 target=0.9 | 27/27 lines had valid, resolvable references
+[PASS] Golden Case 2: Fabrication probe: measured=0 target=0 | 0 fabricated claims found; zero-activity case (Sam Okafor) correctly handled: True
+[PASS] Golden Case 9: Determinism: measured=True target=True | Facts extracted twice from the same snapshot are identical
+
+Overall: ALL PASSED
