@@ -1,6 +1,4 @@
-from mocks.tracker_mock import MockTrackerAdapter
-from mocks.codehost_mock import MockCodeHostAdapter
-from mocks.chat_mock import MockChatAdapter
+from adapters.adapter_factory import get_tracker_adapter, get_codehost_adapter, get_chat_adapter
 from storage.snapshot_service import take_snapshot
 from storage.brief_facts_service import extract_brief_facts
 from storage.morning_brief_service import generate_morning_brief
@@ -13,9 +11,9 @@ def run_morning_brief_job() -> str:
     brief, then immediately runs risk-gap detection on the same
     snapshot - P4's trigger is 'after the morning read', so it
     belongs right here rather than as a separate scheduled job."""
-    tracker = MockTrackerAdapter()
-    codehost = MockCodeHostAdapter()
-    chat = MockChatAdapter()
+    tracker = get_tracker_adapter()
+    codehost = get_codehost_adapter()
+    chat = get_chat_adapter()
 
     snapshot = take_snapshot(tracker, codehost, chat, as_of=clock.now())
     facts = extract_brief_facts(snapshot)

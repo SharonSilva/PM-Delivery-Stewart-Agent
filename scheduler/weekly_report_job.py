@@ -1,6 +1,4 @@
-from mocks.tracker_mock import MockTrackerAdapter
-from mocks.codehost_mock import MockCodeHostAdapter
-from mocks.chat_mock import MockChatAdapter
+from adapters.adapter_factory import get_tracker_adapter, get_codehost_adapter, get_chat_adapter
 from storage.snapshot_service import take_snapshot
 from storage.weekly_report_service import extract_weekly_report_facts
 from storage.weekly_report_assembly_service import generate_weekly_report
@@ -10,9 +8,9 @@ from scheduler.clock import clock
 def run_weekly_report_job() -> str:
     """Weekly job. Produces a DRAFT report only - never sends.
     Per spec, the delivery lead reviews, edits, and sends it."""
-    tracker = MockTrackerAdapter()
-    codehost = MockCodeHostAdapter()
-    chat = MockChatAdapter()
+    tracker = get_tracker_adapter()
+    codehost = get_codehost_adapter()
+    chat = get_chat_adapter()
 
     snapshot = take_snapshot(tracker, codehost, chat, as_of=clock.now())
     facts = extract_weekly_report_facts(snapshot)

@@ -1,6 +1,4 @@
-from mocks.tracker_mock import MockTrackerAdapter
-from mocks.codehost_mock import MockCodeHostAdapter
-from mocks.chat_mock import MockChatAdapter
+from adapters.adapter_factory import get_tracker_adapter, get_codehost_adapter, get_chat_adapter
 from storage.snapshot_service import take_snapshot
 from storage.blocker_promotion_service import detect_promotion_candidates
 from scheduler.clock import clock
@@ -10,9 +8,9 @@ def run_promotion_check_job() -> list:
     """Daily job: checks all currently-blocked items against the
     configured age threshold and creates draft promotion proposals
     for any that qualify and aren't already proposed."""
-    tracker = MockTrackerAdapter()
-    codehost = MockCodeHostAdapter()
-    chat = MockChatAdapter()
+    tracker = get_tracker_adapter()
+    codehost = get_codehost_adapter()
+    chat = get_chat_adapter()
 
     snapshot = take_snapshot(tracker, codehost, chat, as_of=clock.now())
     proposals = detect_promotion_candidates(snapshot)

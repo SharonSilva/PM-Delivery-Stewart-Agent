@@ -1,8 +1,6 @@
 from datetime import datetime, timedelta
 
-from mocks.tracker_mock import MockTrackerAdapter
-from mocks.codehost_mock import MockCodeHostAdapter
-from mocks.chat_mock import MockChatAdapter
+from adapters.adapter_factory import get_tracker_adapter, get_codehost_adapter, get_chat_adapter
 from storage.snapshot_service import take_snapshot
 from storage.snapshot_store import get_all_snapshots
 from storage.eod_delta_service import compute_eod_delta
@@ -15,9 +13,9 @@ def run_eod_summary_job() -> str:
     BOTH a morning snapshot and a fresh EOD snapshot - it looks
     back through today's persisted snapshots to find the earliest
     one taken today, rather than assuming one exists in memory."""
-    tracker = MockTrackerAdapter()
-    codehost = MockCodeHostAdapter()
-    chat = MockChatAdapter()
+    tracker = get_tracker_adapter()
+    codehost = get_codehost_adapter()
+    chat = get_chat_adapter()
 
     now = clock.now()
     eod_snapshot = take_snapshot(tracker, codehost, chat, as_of=now)

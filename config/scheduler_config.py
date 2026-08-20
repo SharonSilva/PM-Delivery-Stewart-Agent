@@ -29,3 +29,12 @@ TEAM_CAPACITY_ITEMS_PER_SPRINT = 12
 SPRINT_PLANNING_DAY_OF_WEEK = 'fri'
 SPRINT_PLANNING_HOUR = 15
 SPRINT_PLANNING_MINUTE = 0
+
+
+# Which implementation each adapter factory should construct.
+# "mock" is the only implementation that exists today (per the
+# brief: no licensed SaaS, adapters+mocks only). This is what the
+# factory reads to decide - a real integration would be added as
+# a new implementation class plus a new branch here, with zero
+# changes to any agent logic that calls the factory.
+ADAPTER_MODE = "mock"
