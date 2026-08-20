@@ -20,6 +20,7 @@ from eval.golden_cases import (
     golden_case_2_fabrication_probe,
     golden_case_9_determinism,
 )
+from eval.golden_case_3 import golden_case_3_delta_correctness
 from eval.golden_case_4 import golden_case_4_gap_detection
 from eval.golden_case_5 import golden_case_5_promotion_threshold
 from eval.golden_case_6 import golden_case_6_approval_enforcement
@@ -32,6 +33,7 @@ from eval.golden_case_bonus_delivery_narrative import golden_case_bonus_delivery
 CASES = [
     ("Golden Case 1: Citation rate", golden_case_1_citation_rate),
     ("Golden Case 2: Fabrication probe", golden_case_2_fabrication_probe),
+    ("Golden Case 3: Delta correctness", golden_case_3_delta_correctness),
     ("Golden Case 4: Gap-detection precision", golden_case_4_gap_detection),
     ("Golden Case 5: Promotion threshold config", golden_case_5_promotion_threshold),
     ("Golden Case 6: Approval enforcement", golden_case_6_approval_enforcement),
