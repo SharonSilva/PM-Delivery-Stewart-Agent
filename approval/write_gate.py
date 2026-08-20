@@ -1,0 +1,32 @@
+from storage.proposal_store import get_proposal
+from models.proposal import ProposalStatus
+
+
+class WriteBlockedError(Exception):
+    """Raised when something tries to execute a proposal that
+    isn't approved. This is the enforcement point the brief
+    explicitly asks to see in code during Q&A."""
+    pass
+
+
+def execute_approved_write(proposal_id: str, write_fn) -> None:
+    """The ONLY path through which a proposal's payload reaches a
+    real write. Structurally cannot execute anything that isn't
+    APPROVED - this is what makes the gate 'enforced in the data
+    model, not only the interface': even a caller that bypasses
+    the UI entirely and calls this directly will be blocked.
+
+    write_fn is the adapter write call to perform (e.g., writing
+    a risk-log entry). It receives final_payload only if approved.
+    """
+    proposal = get_proposal(proposal_id)
+    if proposal is None:
+        raise ValueError(f"No such proposal: {proposal_id}")
+
+    if proposal.status != ProposalStatus.APPROVED:
+        raise WriteBlockedError(
+            f"Proposal {proposal_id} is {proposal.status.value}, not approved. "
+            f"Refusing to write. (Default-safe: no write on anything but explicit approval.)"
+        )
+
+    write_fn(proposal.final_payload)
