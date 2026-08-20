@@ -1,0 +1,28 @@
+{
+  "risks": [
+    {
+      "id": "R-001",
+      "description": "Login page design (T-002) has been in progress for two weeks without a design review scheduled",
+      "impact": "Medium",
+      "item_id": "T-002",
+      "owner": "Jordan Lee",
+      "created_at": "2026-08-12T09:00:00"
+    },
+    {
+      "id": "R-002",
+      "description": "Database schema migration (T-018) touches production tables with no rollback plan documented",
+      "impact": "High",
+      "item_id": "T-018",
+      "owner": "Bob Martinez",
+      "created_at": "2026-08-18T10:00:00"
+    },
+    {
+      "id": "R-003",
+      "description": "Team has no dedicated QA capacity beyond Priya Nair for Sprint 2 regression testing",
+      "impact": "Medium",
+      "item_id": null,
+      "owner": null,
+      "created_at": "2026-08-17T09:00:00"
+    }
+  ]
+}

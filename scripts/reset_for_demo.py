@@ -4,8 +4,11 @@ before recording the demo, so the recording shows genuine first-run
 behavior (a fresh gap-detection proposal, a fresh promotion
 proposal, etc.) rather than leftovers from earlier manual testing.
 
-Does NOT touch seed_data/*.json (the committed sample data itself)
-- only clears state that our OWN runs have accumulated on top of it:
+Does NOT touch most of seed_data/*.json (the committed sample data
+itself) - EXCEPT seed_data/risk_log.json, which write-execution
+testing can genuinely mutate (RiskLogAdapter.append_risk writes
+directly to it), so it is restored from a tracked clean-template
+copy. Everything else cleared is state our OWN runs accumulated:
   - the proposals table (SQLite)
   - storage/weekly_reports.jsonl (persisted weekly-report history)
   - storage/notifications.jsonl (nudge/escalation log)
@@ -16,6 +19,7 @@ Does NOT touch seed_data/*.json (the committed sample data itself)
 Run with: python3.11 scripts/reset_for_demo.py
 """
 import shutil
+import json
 from pathlib import Path
 
 from storage.db import get_connection, init_db
@@ -51,6 +55,24 @@ def reset_llm_cache():
         print("LLM cache directory already absent - nothing to do.")
 
 
+def reset_risk_log():
+    """Real risk-log entries can be written during write-execution
+    testing/demos (RiskLogAdapter.append_risk writes directly to
+    seed_data/risk_log.json). This restores it to the clean,
+    committed 3-entry baseline from a tracked template file, so
+    repeated demo runs never accumulate extra entries."""
+    template = Path("seed_data/risk_log.clean_template.json")
+    target = Path("seed_data/risk_log.json")
+    if not template.exists():
+        print("WARNING: seed_data/risk_log.clean_template.json not found - risk log NOT reset.")
+        return
+    with open(template) as f:
+        data = json.load(f)
+    count = len(data["risks"])
+    shutil.copy(template, target)
+    print(f"Restored risk log to clean baseline ({count} entries).")
+
+
 def main():
     print("=== Resetting demo state to a clean baseline ===\n")
     reset_proposals_table()
@@ -58,6 +80,7 @@ def main():
     reset_file("storage/notifications.jsonl", "notification (nudge/escalation) log")
     reset_file("storage/refused_meeting_outcomes.jsonl", "meeting-outcome refusal log")
     reset_llm_cache()
+    reset_risk_log()
     print("\nDone. seed_data/*.json was NOT touched - only accumulated run state was cleared.")
 
 
