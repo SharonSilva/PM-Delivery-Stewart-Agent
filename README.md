@@ -8,19 +8,19 @@ Built as a 7-day intern challenge. The brief's task catalog and scope are delibe
 
 | # | Capability | Tier | Status | Notes |
 |---|---|---|---|---|
-| P1 | Adapters + snapshotting | MUST |  Done | 4 core adapters (Tracker/CodeHost/Chat/Notification) + RiskLog/ProposalStore, all behind interfaces, all pulled from one central factory |
-| P2 | Morning brief | MUST  Done | Schema-constrained narration, reference-or-drop validation, real scheduler |
+| P1 | Adapters + snapshotting | MUST | Done | 4 core adapters (Tracker/CodeHost/Chat/Notification) + RiskLog/ProposalStore, all behind interfaces, all pulled from one central factory |
+| P2 | Morning brief | MUST | Done | Schema-constrained narration, reference-or-drop validation, real scheduler |
 | P3 | End-of-day summary | MUST | Done | Genuine deltas (not a repeat of the morning), same-day flaps collapsed correctly |
-| P4 | Risk-log gap detection | MUST |  Done | Proposal-gated, dedup on rejection, write execution verified |
-| P5 | Approval gate | MUST |  Done | Enforced at the service layer, not just the UI — proven by an automated test attacking the write function directly |
-| P6 | Blocker-to-risk promotion | SHOULD |  Done | Threshold is genuine config, proven by comparing two threshold values |
-| P7 | Commitment nudges & escalation | SHOULD |  Done | Built against seeded commitments only (see decision log) |
-| P8 | Meeting-outcome consumption | SHOULD |  Done | Consent is a hard gate; refusal logged, never silently dropped |
-| P9 | Weekly status report | SHOULD |  Done | Draft only, agent never sends |
-| P10 | Sprint planning pack | COULD |  Done | No write path exists (never applied automatically), so no Proposal machinery — see decision log |
-| P11 | Delivery narrative | COULD |  Done | Correlation only, never cause — see decision log |
-| — | Eval harness | Required |  Done | 12 cases: the brief's 9 (matching their spec exactly) + 3 disclosed bonus cases |
-| — | Real scheduler with clock override | Required |  Done | APScheduler, `scheduler/clock.py` supports demo overrides |
+| P4 | Risk-log gap detection | MUST | Done | Proposal-gated, dedup on rejection, write execution verified |
+| P5 | Approval gate | MUST | Done | Enforced at the service layer, not just the UI - proven by an automated test attacking the write function directly |
+| P6 | Blocker-to-risk promotion | SHOULD | Done | Threshold is genuine config, proven by comparing two threshold values |
+| P7 | Commitment nudges and escalation | SHOULD | Done | Built against seeded commitments only (see decision log) |
+| P8 | Meeting-outcome consumption | SHOULD | Done | Consent is a hard gate; refusal logged, never silently dropped |
+| P9 | Weekly status report | SHOULD | Done | Draft only, agent never sends |
+| P10 | Sprint planning pack | COULD | Done | No write path exists (never applied automatically), so no Proposal machinery - see decision log |
+| P11 | Delivery narrative | COULD | Done | Correlation only, never cause - see decision log |
+| - | Eval harness | Required | Done | 12 cases: the brief 9 (matching their spec exactly) + 3 disclosed bonus cases |
+| - | Real scheduler with clock override | Required | Done | APScheduler, scheduler/clock.py supports demo overrides |
 
 **Not built:** anything beyond the above. No real external integrations (by design — mocks only, per the brief's ground rules). No auth/multi-tenancy. No visual UI beyond console output.
 
@@ -57,7 +57,76 @@ python3.11 scripts/reset_for_demo.py
 
 Setup verified from a genuinely fresh virtual environment as part of this submission.
 
+
+## Diagrams
+
+### The 11 capabilities, by tier
+
+```mermaid
+flowchart TD
+    subgraph MUST[MUST]
+        P1[P1 Adapters + Snapshotting]
+        P2[P2 Morning Brief]
+        P3[P3 End-of-Day Summary]
+        P4[P4 Risk-Gap Detection]
+        P5[P5 Approval Gate]
+    end
+    subgraph SHOULD[SHOULD]
+        P6[P6 Blocker Promotion]
+        P7[P7 Commitment Nudges]
+        P8[P8 Meeting Outcomes]
+        P9[P9 Weekly Report]
+    end
+    subgraph COULD[COULD]
+        P10[P10 Sprint Planning Pack]
+        P11[P11 Delivery Narrative]
+    end
+
+    P1 --> P2
+    P1 --> P3
+    P2 --> P4
+    P4 --> P5
+    P3 --> P6
+    P6 --> P5
+    P8 --> P5
+    P2 --> P7
+    P3 --> P9
+    P9 --> P10
+    P9 --> P11
+```
+
+### Core pipeline (the shape every capability follows)
+
+```mermaid
+flowchart LR
+    A[Seed data] --> B[Adapter]
+    B --> C[Snapshot]
+    C --> D[Pure-code fact extraction]
+    D --> E[LLM narration]
+    E --> F[Reference-or-drop validation]
+    F --> G[Assembly / render]
+    G --> H[Output to delivery lead]
+```
+
+### Approval gate
+
+```mermaid
+flowchart TD
+    A[Capability detects a needed write] --> B[submit_proposal - status PENDING]
+    B --> C{Human reviews}
+    C -->|approve| D[status APPROVED, final = original]
+    C -->|reject| E[status REJECTED - stops here]
+    C -->|edit then approve| F[status APPROVED, final = edited]
+    D --> G[execute_approved_write]
+    F --> G
+    G --> H{status == APPROVED?}
+    H -->|no| I[WriteBlockedError - no write]
+    H -->|yes| J[Real write via adapter]
+```
+
 ## Architecture
+
+Full detail in [docs/architecture.md](docs/architecture.md).
 
 **Layering:** every capability follows the same shape — pure-code fact extraction → schema-constrained LLM narration → reference-or-drop validation → assembly/render. The model is only ever asked to phrase a fact that code has already computed; it is never asked to compute or judge a fact itself. Where the model has been given a fact and asked only to phrase it (e.g. a weekly velocity direction), its output is still validated and discarded in favor of a deterministic fallback if it contradicts the given fact.
 
@@ -69,7 +138,7 @@ Setup verified from a genuinely fresh virtual environment as part of this submis
 
 **Storage:** SQLite for proposals and snapshots; local JSON/JSONL files for seed data and inspectable write logs (notifications, refusals). No capability's business logic touches these directly — always through an adapter.
 
-## Deliberate scope decisions (see the decision log for full detail)
+## Deliberate scope decisions (see [docs/decision_log.md](docs/decision_log.md) for full detail)
 
 - **P7** was built against seeded commitments only, not auto-fed by P8's approved meeting-outcome actions — treated as a real, separate design question rather than a small wiring task.
 - **P9's "the week"** is sprint-start-to-latest-snapshot, not a fabricated fixed 7-day window, since the real data doesn't span a full week yet — disclosed explicitly in the report itself.

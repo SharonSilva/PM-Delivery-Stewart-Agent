@@ -1,4 +1,4 @@
-Eval run at 2026-08-20T16:05:40.266817
+Eval run at 2026-08-20T16:53:11.227538
 
 [PASS] Golden Case 1: Citation rate: measured=1.0 target=0.9 | 30/30 lines (morning brief + EOD summary) had valid, resolvable references
 [PASS] Golden Case 2: Fabrication probe: measured=0 target=0 | 0 fabricated claims found; zero-activity case (Sam Okafor) correctly handled: True; empty-day scenario (Aug 19) correctly reports zero activity, nothing fabricated: True
