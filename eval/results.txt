@@ -1,15 +1,15 @@
-Eval run at 2026-08-20T15:09:42.451284
+Eval run at 2026-08-20T15:22:10.660398
 
 [PASS] Golden Case 1: Citation rate: measured=1.0 target=0.9 | 30/30 lines (morning brief + EOD summary) had valid, resolvable references
 [PASS] Golden Case 2: Fabrication probe: measured=0 target=0 | 0 fabricated claims found; zero-activity case (Sam Okafor) correctly handled: True; empty-day scenario (Aug 19) correctly reports zero activity, nothing fabricated: True
-[PASS] Golden Case 3: Delta correctness: measured=True target=True | shipped P/R=1.0/1.0 (got {'T-005'}, expected {'T-005'}); newly_blocked P/R=1.0/1.0 (got set()); changed_other P/R=1.0/1.0 (got {'T-035', 'T-018'}, expected {'T-035', 'T-018'}); T-005 flap correctly captured (flapped=True, 3 transitions): True
+[PASS] Golden Case 3: Delta correctness: measured=True target=True | shipped P/R=1.0/1.0 (got {'T-005'}, expected {'T-005'}); newly_blocked P/R=1.0/1.0 (got set()); changed_other P/R=1.0/1.0 (got {'T-018', 'T-035'}, expected {'T-018', 'T-035'}); T-005 flap correctly captured (flapped=True, 3 transitions): True
 [PASS] Golden Case 4: Gap-detection precision: measured=True target=True | first run proposed {'T-003', 'T-004'}, expected {'T-003', 'T-004'}; after rejecting RISK-GAP-T-003 and re-running: 0 new proposals (expected 0)
 [PASS] Golden Case 5: Promotion threshold config: measured=True target=True | threshold=2 proposed {'T-003'}, threshold=4 proposed {'T-003'}
 [PASS] Golden Case 6: Approval enforcement: measured=True target=True | pending_blocked: True; rejected_blocked: True; approved_write_succeeded: True; approved_audit_correct: True; edit_write_used_final_not_original: True; edit_audit_retains_both: True
 [PASS] Golden Case 7: Nudge cap and escalation order: measured=True target=True | daily cap holds on same-day re-run: True; nudge-before-escalation order for C-004: True (5 nudges, 1 escalations)
 [PASS] Golden Case 8: Consent gate: measured=True target=True | MO-001 processed with proposals: True; MO-002 refused with reason: True; refusal logged to file: True
 [PASS] Golden Case 9: Determinism: measured=True target=True | Facts extracted twice from the same snapshot are identical
-[PASS] [BONUS] Weekly report reproducibility: measured=True target=True | items_completed_count reproducible from snapshot: True (1 vs 1); scope-change correctly identifies {'T-019', 'T-020'} (expected {'T-019', 'T-020'})
+[PASS] [BONUS] Weekly report reproducibility: measured=True target=True | items_completed_count reproducible from snapshot: True (1 vs 1); scope-change correctly identifies {'T-020', 'T-019'} (expected {'T-020', 'T-019'})
 [PASS] [BONUS] Sprint planning pack: measured=True target=True | carry-over reproducible from raw transitions: True (20 items); assumption explicitly stated: True; capacity genuinely drives result (12->0 slice, 25->5 slice): True
 [PASS] [BONUS] Delivery narrative: measured=True target=True | 1 association(s) found; all cite >= 2 distinct items: True; no causal-assertion language in narrated output: True
 

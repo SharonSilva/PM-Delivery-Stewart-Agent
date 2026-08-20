@@ -33,7 +33,10 @@ def _parse_narrated_brief(raw_response: str) -> NarratedBrief:
 def _call_with_retry(prompt: str) -> NarratedBrief:
     last_error = None
     for attempt in range(MAX_RETRIES):
-        raw = call_llm(prompt, use_cache=True)
+        # Only use the cache on the first attempt - a retry that
+        # replays the same cached malformed response is not a real
+        # retry at all. Force a fresh generation on every subsequent attempt.
+        raw = call_llm(prompt, use_cache=(attempt == 0))
         try:
             return _parse_narrated_brief(raw)
         except (json.JSONDecodeError, ValidationError) as e:
