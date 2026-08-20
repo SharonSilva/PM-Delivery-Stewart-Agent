@@ -2,26 +2,21 @@ from datetime import datetime
 
 from models.proposal import Proposal, ProposalStatus
 from adapters.proposal_store_adapter import ProposalStoreAdapter
-from mocks.proposal_store_sqlite import SqliteProposalStoreAdapter
 
 
-def _default_store() -> ProposalStoreAdapter:
-    return SqliteProposalStoreAdapter()
-
-
-def submit_proposal(proposal: Proposal, store: ProposalStoreAdapter = None) -> None:
+def submit_proposal(proposal: Proposal, store: ProposalStoreAdapter) -> None:
     """Any capability wanting to write calls this instead of
     writing directly. The proposal starts PENDING - nothing has
-    happened to the real system yet."""
-    if store is None:
-        store = _default_store()
+    happened to the real system yet.
+
+    store is a required parameter (interface type) - callers must
+    construct a concrete implementation via adapters.adapter_factory,
+    never a default fallback here."""
     store.save(proposal)
 
 
-def approve(proposal_id: str, approver: str, store: ProposalStoreAdapter = None) -> Proposal:
+def approve(proposal_id: str, approver: str, store: ProposalStoreAdapter) -> Proposal:
     """Approve as-is. final_payload = original_payload."""
-    if store is None:
-        store = _default_store()
     proposal = store.get(proposal_id)
     if proposal is None:
         raise ValueError(f"No such proposal: {proposal_id}")
@@ -33,11 +28,9 @@ def approve(proposal_id: str, approver: str, store: ProposalStoreAdapter = None)
     return proposal
 
 
-def edit_then_approve(proposal_id: str, approver: str, edited_payload: dict, store: ProposalStoreAdapter = None) -> Proposal:
+def edit_then_approve(proposal_id: str, approver: str, edited_payload: dict, store: ProposalStoreAdapter) -> Proposal:
     """Human modifies the payload before approving. Original stays
     untouched for the audit trail; final_payload reflects the edit."""
-    if store is None:
-        store = _default_store()
     proposal = store.get(proposal_id)
     if proposal is None:
         raise ValueError(f"No such proposal: {proposal_id}")
@@ -49,9 +42,7 @@ def edit_then_approve(proposal_id: str, approver: str, edited_payload: dict, sto
     return proposal
 
 
-def reject(proposal_id: str, approver: str, store: ProposalStoreAdapter = None) -> Proposal:
-    if store is None:
-        store = _default_store()
+def reject(proposal_id: str, approver: str, store: ProposalStoreAdapter) -> Proposal:
     proposal = store.get(proposal_id)
     if proposal is None:
         raise ValueError(f"No such proposal: {proposal_id}")

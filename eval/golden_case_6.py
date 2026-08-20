@@ -11,6 +11,7 @@ from mocks.codehost_mock import MockCodeHostAdapter
 from mocks.chat_mock import MockChatAdapter
 from storage.snapshot_service import take_snapshot
 from storage.weekly_report_service import extract_weekly_report_facts
+from mocks.risk_log_mock import MockRiskLogAdapter
 
 ANCHOR = datetime(2026, 8, 18, 18, 0, 0)
 EXPECTED_SCOPE_ADDED = {"T-019", "T-020"}
@@ -29,7 +30,8 @@ def golden_case_6_weekly_report():
     chat = MockChatAdapter()
     snapshot = take_snapshot(tracker, codehost, chat, as_of=ANCHOR)
 
-    facts = extract_weekly_report_facts(snapshot)
+    risk_log = MockRiskLogAdapter()
+    facts = extract_weekly_report_facts(snapshot, risk_log)
 
     # Reproducibility check: re-derive items_completed_count directly
     # from the snapshot, independent of the facts extraction code path,

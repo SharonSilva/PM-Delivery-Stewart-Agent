@@ -3,9 +3,7 @@ from datetime import datetime
 from models.snapshot import Snapshot
 from models.proposal import Proposal, ProposalStatus
 from adapters.risk_log_adapter import RiskLogAdapter
-from mocks.risk_log_mock import MockRiskLogAdapter
 from adapters.proposal_store_adapter import ProposalStoreAdapter
-from mocks.proposal_store_sqlite import SqliteProposalStoreAdapter
 
 PROPOSAL_TYPE = "risk_gap_fill"
 
@@ -32,21 +30,17 @@ def _already_has_proposal(item_id: str, store: ProposalStoreAdapter) -> bool:
     )
 
 
-def detect_risk_gaps(snapshot: Snapshot, risk_log: RiskLogAdapter = None, store: ProposalStoreAdapter = None) -> list[Proposal]:
+def detect_risk_gaps(snapshot: Snapshot, risk_log: RiskLogAdapter, store: ProposalStoreAdapter) -> list[Proposal]:
     """For each blocker not in the risk log AND not already
     proposed before (in any status), create a new pending proposal
     with a draft risk entry. Returns the list of newly-created
     proposals (not proposals that already existed).
 
-    risk_log is accepted as a parameter (interface type), defaulting
-    to the mock - this is what lets a real integration be swapped in
-    later without touching this function, and what a central
-    adapter factory will supply going forward."""
-    if risk_log is None:
-        risk_log = MockRiskLogAdapter()
-    if store is None:
-        store = SqliteProposalStoreAdapter()
-
+    risk_log and store are required parameters (interface types) -
+    callers must construct concrete implementations via
+    adapters.adapter_factory, never a default fallback here. This
+    keeps every mock import at the composition boundary, not inside
+    business logic."""
     risks = risk_log.load_risks()
     risk_item_ids = {r["item_id"] for r in risks if r.get("item_id")}
 

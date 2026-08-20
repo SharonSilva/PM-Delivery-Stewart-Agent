@@ -3,7 +3,6 @@ from datetime import date, timedelta
 from models.commitment import Commitment
 from models.notification import NotificationRecord
 from storage.commitment_store import load_commitments
-from mocks.notification_mock import MockNotificationAdapter
 
 NUDGE_WINDOW_DAYS = 2       # nudge when due within this many days
 ESCALATION_THRESHOLD_DAYS = 3  # escalate once this many days overdue
@@ -56,13 +55,11 @@ def classify_commitment(commitment: Commitment, today: date) -> str:
     return "ok"
 
 
-def run_commitment_check(as_of_date: date, notification_adapter=None) -> dict:
+def run_commitment_check(as_of_date: date, notification_adapter) -> dict:
     """Runs the full daily check: classifies every commitment,
     sends nudges (capped per person per day) and escalations
     (visible to lead, per spec), and returns an ageing view.
     """
-    if notification_adapter is None:
-        notification_adapter = MockNotificationAdapter()
 
     commitments = load_commitments()
     existing_log = _read_notification_log()

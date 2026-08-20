@@ -4,6 +4,7 @@ from typing import Optional
 from models.snapshot import Snapshot
 from models.delivery_narrative import BlockerPeriod, ScopeEvent, TemporalAssociation, DeliveryNarrativeFacts
 from storage.weekly_report_service import extract_weekly_report_facts
+from adapters.risk_log_adapter import RiskLogAdapter
 from storage.weekly_narration_service import _classify_velocity_change
 
 
@@ -106,8 +107,8 @@ def _compute_associations(
     return associations
 
 
-def extract_delivery_narrative_facts(snapshot: Snapshot) -> DeliveryNarrativeFacts:
-    weekly_facts = extract_weekly_report_facts(snapshot)
+def extract_delivery_narrative_facts(snapshot: Snapshot, risk_log: RiskLogAdapter) -> DeliveryNarrativeFacts:
+    weekly_facts = extract_weekly_report_facts(snapshot, risk_log)
 
     period_start = date.fromisoformat(weekly_facts.week_start)
     period_end = date.fromisoformat(weekly_facts.week_end)

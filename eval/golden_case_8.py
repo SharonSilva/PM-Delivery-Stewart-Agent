@@ -7,6 +7,7 @@ import json
 
 from storage.db import get_connection, init_db
 from storage.meeting_outcome_consumer import process_meeting_outcome
+from mocks.proposal_store_sqlite import SqliteProposalStoreAdapter
 
 
 def _reset_test_proposals():
@@ -23,9 +24,10 @@ def golden_case_8_consent_gate():
     with open("seed_data/meeting_outcomes.json") as f:
         data = json.load(f)
 
+    store = SqliteProposalStoreAdapter()
     results = {}
     for record in data["meeting_outcomes"]:
-        results[record["id"]] = process_meeting_outcome(record)
+        results[record["id"]] = process_meeting_outcome(record, store)
 
     mo_001 = results.get("MO-001")
     mo_002 = results.get("MO-002")

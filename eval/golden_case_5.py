@@ -6,18 +6,19 @@ correctly.
 """
 from datetime import datetime
 
-from storage.db import get_connection, init_db
 from mocks.tracker_mock import MockTrackerAdapter
 from mocks.codehost_mock import MockCodeHostAdapter
 from mocks.chat_mock import MockChatAdapter
+from mocks.risk_log_mock import MockRiskLogAdapter
+from mocks.proposal_store_sqlite import SqliteProposalStoreAdapter
 from storage.snapshot_service import take_snapshot
 from storage.blocker_promotion_service import detect_promotion_candidates
 
 ANCHOR = datetime(2026, 8, 18, 18, 0, 0)
 
 
-def _reset_test_proposals():
-    init_db()
+def _reset_test_proposals(store: SqliteProposalStoreAdapter):
+    from storage.db import get_connection
     conn = get_connection()
     conn.execute("DELETE FROM proposals WHERE proposal_type = 'blocker_promotion'")
     conn.commit()
@@ -28,16 +29,18 @@ def golden_case_5_promotion_threshold():
     tracker = MockTrackerAdapter()
     codehost = MockCodeHostAdapter()
     chat = MockChatAdapter()
+    risk_log = MockRiskLogAdapter()
+    store = SqliteProposalStoreAdapter()
     snapshot = take_snapshot(tracker, codehost, chat, as_of=ANCHOR)
 
-    _reset_test_proposals()
-    proposals_at_2 = detect_promotion_candidates(snapshot, threshold_days=2)
+    _reset_test_proposals(store)
+    proposals_at_2 = detect_promotion_candidates(snapshot, risk_log, store, threshold_days=2)
     ids_at_2 = {p.source_ref for p in proposals_at_2}
 
-    _reset_test_proposals()
-    proposals_at_4 = detect_promotion_candidates(snapshot, threshold_days=4)
+    _reset_test_proposals(store)
+    proposals_at_4 = detect_promotion_candidates(snapshot, risk_log, store, threshold_days=4)
     ids_at_4 = {p.source_ref for p in proposals_at_4}
-    _reset_test_proposals()
+    _reset_test_proposals(store)
 
     # T-003 is 4 days blocked, T-004 is 1 day blocked (per seed data).
     # threshold=2 should catch T-003 only; threshold=4 should still catch

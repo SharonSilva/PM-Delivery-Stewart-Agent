@@ -9,6 +9,7 @@ from mocks.codehost_mock import MockCodeHostAdapter
 from mocks.chat_mock import MockChatAdapter
 from storage.snapshot_service import take_snapshot
 from storage.brief_facts_service import extract_brief_facts
+from mocks.risk_log_mock import MockRiskLogAdapter
 from storage.morning_brief_service import generate_morning_brief
 from storage.brief_narration_service import narrate_person_status
 from storage.reference_validation_service import validate_lines
@@ -21,7 +22,8 @@ def _get_facts():
     codehost = MockCodeHostAdapter()
     chat = MockChatAdapter()
     snapshot = take_snapshot(tracker, codehost, chat, as_of=ANCHOR)
-    return extract_brief_facts(snapshot)
+    risk_log = MockRiskLogAdapter()
+    return extract_brief_facts(snapshot, risk_log)
 
 
 def golden_case_1_citation_rate():

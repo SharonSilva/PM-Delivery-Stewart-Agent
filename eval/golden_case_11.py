@@ -11,6 +11,7 @@ from mocks.codehost_mock import MockCodeHostAdapter
 from mocks.chat_mock import MockChatAdapter
 from storage.snapshot_service import take_snapshot
 from storage.delivery_narrative_service import extract_delivery_narrative_facts
+from mocks.risk_log_mock import MockRiskLogAdapter
 from storage.delivery_narrative_assembly_service import generate_delivery_narrative
 from storage.delivery_narrative_narration_service import _contains_causal_assertion
 
@@ -29,7 +30,8 @@ def golden_case_11_delivery_narrative():
     chat = MockChatAdapter()
     snapshot = take_snapshot(tracker, codehost, chat, as_of=ANCHOR)
 
-    facts = extract_delivery_narrative_facts(snapshot)
+    risk_log = MockRiskLogAdapter()
+    facts = extract_delivery_narrative_facts(snapshot, risk_log)
     narrative = generate_delivery_narrative(facts)
 
     # Every association in facts must cite >= 2 distinct items (code layer)

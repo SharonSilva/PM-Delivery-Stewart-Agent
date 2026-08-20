@@ -3,7 +3,6 @@ from datetime import date, datetime
 from models.snapshot import Snapshot
 from models.weekly_report import WeeklyReportFacts, RankedRisk, ScopeChangeItem
 from adapters.risk_log_adapter import RiskLogAdapter
-from mocks.risk_log_mock import MockRiskLogAdapter
 from storage.weekly_report_store import get_latest_weekly_report_facts, save_weekly_report_facts
 from storage.brief_facts_service import SPRINT_2_START, SPRINT_2_END, SPRINT_2_NAME
 
@@ -25,19 +24,16 @@ def _rank_risks(risks: list[dict]) -> list[RankedRisk]:
     ]
 
 
-def extract_weekly_report_facts(snapshot: Snapshot, risk_log: RiskLogAdapter = None) -> WeeklyReportFacts:
+def extract_weekly_report_facts(snapshot: Snapshot, risk_log: RiskLogAdapter) -> WeeklyReportFacts:
     """Deterministic extraction for the weekly report. 'The week'
     is defined as sprint-start-to-latest-snapshot (Sprint 2 to
     date), NOT a fabricated fixed 7-day window, since our real
     transition data doesn't span a full week yet.
 
-    risk_log is accepted as a parameter (interface type), defaulting
-    to the mock - lets a real integration be swapped in without
-    touching this function.
+    risk_log is a required parameter (interface type) - callers
+    must construct a concrete implementation via
+    adapters.adapter_factory, never a default fallback here.
     """
-    if risk_log is None:
-        risk_log = MockRiskLogAdapter()
-
     week_start = SPRINT_2_START
     week_end = snapshot.taken_at.date()
     elapsed_days = max((week_end - week_start).days, 1)  # avoid div-by-zero on day 0

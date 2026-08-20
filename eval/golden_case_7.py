@@ -9,6 +9,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from storage.commitment_tracking_service import run_commitment_check
+from mocks.notification_mock import MockNotificationAdapter
 
 LOG_PATH = Path("storage/notifications.jsonl")
 
@@ -21,8 +22,8 @@ def golden_case_7_nudge_and_escalation():
     # Also verify the daily cap: run TWICE on the SAME day, confirm
     # the second run doesn't send a duplicate nudge to anyone.
     day1 = date(2026, 8, 16)
-    result_a = run_commitment_check(as_of_date=day1)
-    result_b = run_commitment_check(as_of_date=day1)  # same day, re-run
+    result_a = run_commitment_check(as_of_date=day1, notification_adapter=MockNotificationAdapter())
+    result_b = run_commitment_check(as_of_date=day1, notification_adapter=MockNotificationAdapter())  # same day, re-run
     cap_holds = len(result_b["nudges_sent"]) == 0  # everyone already nudged today
 
     # Now simulate C-004's sequence: nudge (Aug 13-17) then escalate (Aug 18)
@@ -32,7 +33,7 @@ def golden_case_7_nudge_and_escalation():
     current = date(2026, 8, 13)
     end = date(2026, 8, 18)
     while current <= end:
-        run_commitment_check(as_of_date=current)
+        run_commitment_check(as_of_date=current, notification_adapter=MockNotificationAdapter())
         current += timedelta(days=1)
 
     with open(LOG_PATH) as f:

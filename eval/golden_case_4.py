@@ -10,6 +10,8 @@ from storage.db import get_connection, init_db
 from mocks.tracker_mock import MockTrackerAdapter
 from mocks.codehost_mock import MockCodeHostAdapter
 from mocks.chat_mock import MockChatAdapter
+from mocks.risk_log_mock import MockRiskLogAdapter
+from mocks.proposal_store_sqlite import SqliteProposalStoreAdapter
 from storage.snapshot_service import take_snapshot
 from storage.risk_gap_service import detect_risk_gaps
 from approval.approval_service import reject
@@ -38,23 +40,23 @@ def golden_case_4_gap_detection():
     proposed and the present ones are not. Then reject one, re-run,
     and assert no duplicate proposal appears."""
     _reset_test_proposals()
-
     tracker = MockTrackerAdapter()
     codehost = MockCodeHostAdapter()
     chat = MockChatAdapter()
+    risk_log = MockRiskLogAdapter()
+    store = SqliteProposalStoreAdapter()
     snapshot = take_snapshot(tracker, codehost, chat, as_of=ANCHOR)
 
     # First run: should propose exactly the known blockers
-    proposals = detect_risk_gaps(snapshot)
+    proposals = detect_risk_gaps(snapshot, risk_log, store)
     proposed_ids = {p.source_ref for p in proposals}
-
     precision_correct = proposed_ids == KNOWN_BLOCKERS
     detail_parts = [f"first run proposed {proposed_ids}, expected {KNOWN_BLOCKERS}"]
 
     # Reject one, re-run - should NOT re-propose it
     if proposals:
-        reject(proposals[0].id, approver="eval-harness")
-        rerun_proposals = detect_risk_gaps(snapshot)
+        reject(proposals[0].id, approver="eval-harness", store=store)
+        rerun_proposals = detect_risk_gaps(snapshot, risk_log, store)
         no_duplicate = len(rerun_proposals) == 0
         detail_parts.append(f"after rejecting {proposals[0].id} and re-running: {len(rerun_proposals)} new proposals (expected 0)")
     else:
@@ -65,5 +67,4 @@ def golden_case_4_gap_detection():
     target = True
     measured = passed
     detail = "; ".join(detail_parts)
-
     return passed, measured, target, detail

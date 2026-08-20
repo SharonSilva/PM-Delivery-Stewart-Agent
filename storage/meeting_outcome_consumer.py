@@ -2,7 +2,6 @@ from datetime import datetime
 
 from models.proposal import Proposal
 from adapters.proposal_store_adapter import ProposalStoreAdapter
-from mocks.proposal_store_sqlite import SqliteProposalStoreAdapter
 from storage.refusal_log import log_refusal
 
 TRACKER_PROPOSAL_TYPE = "meeting_tracker_update"
@@ -17,15 +16,12 @@ class MeetingOutcomeResult:
         self.risk_proposals = risk_proposals or []
 
 
-def process_meeting_outcome(record: dict, store: ProposalStoreAdapter = None) -> MeetingOutcomeResult:
+def process_meeting_outcome(record: dict, store: ProposalStoreAdapter) -> MeetingOutcomeResult:
     """Consumes one meeting-outcome record. If consent is not
     exactly True, refuses OUTRIGHT - no proposal is created, the
     refusal is logged with a reason. This is a pre-proposal gate,
     distinct from the approval gate: a refused record never even
     reaches the point of being something a human could approve."""
-
-    if store is None:
-        store = SqliteProposalStoreAdapter()
 
     meeting_id = record["id"]
     consent = record.get("consent")
