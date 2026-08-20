@@ -1,8 +1,8 @@
-Eval run at 2026-08-20T20:28:07.581495
+Eval run at 2026-08-20T21:53:11.152537
 
 [PASS] Golden Case 1: Citation rate: measured=1.0 target=0.9 | 30/30 lines (morning brief + EOD summary) had valid, resolvable references
 [PASS] Golden Case 2: Fabrication probe: measured=0 target=0 | 0 fabricated claims found; zero-activity case (Sam Okafor) correctly handled: True; empty-day scenario (Aug 19) correctly reports zero activity, nothing fabricated: True
-[PASS] Golden Case 3: Delta correctness: measured=True target=True | shipped P/R=1.0/1.0 (got {'T-005'}, expected {'T-005'}); newly_blocked P/R=1.0/1.0 (got set()); changed_other P/R=1.0/1.0 (got {'T-018', 'T-035'}, expected {'T-018', 'T-035'}); T-005 flap correctly captured (flapped=True, 3 transitions): True
+[PASS] Golden Case 3: Delta correctness: measured=True target=True | shipped P/R=1.0/1.0 (got {'T-005'}, expected {'T-005'}); newly_blocked P/R=1.0/1.0 (got set()); changed_other P/R=1.0/1.0 (got {'T-035', 'T-018'}, expected {'T-035', 'T-018'}); T-005 flap correctly captured (flapped=True, 3 transitions): True
 [PASS] Golden Case 4: Gap-detection precision: measured=True target=True | first run proposed {'T-003', 'T-004'}, expected {'T-003', 'T-004'}; after rejecting RISK-GAP-T-003 and re-running: 0 new proposals (expected 0)
 [PASS] Golden Case 5: Promotion threshold config: measured=True target=True | threshold=2 proposed {'T-003'}, threshold=4 proposed {'T-003'}
 [PASS] Golden Case 6: Approval enforcement: measured=True target=True | pending_blocked: True; rejected_blocked: True; approved_write_succeeded: True; approved_audit_correct: True; edit_write_used_final_not_original: True; edit_audit_retains_both: True
