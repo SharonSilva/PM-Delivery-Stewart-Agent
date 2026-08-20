@@ -19,6 +19,7 @@ from eval.golden_case_5 import golden_case_5_promotion_threshold
 from eval.golden_case_6 import golden_case_6_weekly_report
 from eval.golden_case_7 import golden_case_7_nudge_and_escalation
 from eval.golden_case_8 import golden_case_8_consent_gate
+from eval.golden_case_10 import golden_case_10_sprint_planning
 
 CASES = [
     ("Golden Case 1: Citation rate", golden_case_1_citation_rate),
@@ -29,6 +30,7 @@ CASES = [
     ("Golden Case 7: Nudge cap and escalation order", golden_case_7_nudge_and_escalation),
     ("Golden Case 8: Consent gate", golden_case_8_consent_gate),
     ("Golden Case 9: Determinism", golden_case_9_determinism),
+    ("Golden Case 10: Sprint planning pack", golden_case_10_sprint_planning),
 ]
 
 
