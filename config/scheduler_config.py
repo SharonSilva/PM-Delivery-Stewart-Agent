@@ -2,3 +2,7 @@
 # Change this to whatever time the delivery lead wants the brief posted.
 MORNING_BRIEF_HOUR = 9
 MORNING_BRIEF_MINUTE = 0
+
+# Configured local time for the end-of-day summary job.
+EOD_SUMMARY_HOUR = 18
+EOD_SUMMARY_MINUTE = 0
