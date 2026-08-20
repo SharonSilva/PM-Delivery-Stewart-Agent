@@ -6,3 +6,9 @@ MORNING_BRIEF_MINUTE = 0
 # Configured local time for the end-of-day summary job.
 EOD_SUMMARY_HOUR = 18
 EOD_SUMMARY_MINUTE = 0
+
+# Blocker age (in days) at or beyond which a promotion proposal is generated.
+BLOCKER_PROMOTION_THRESHOLD_DAYS = 2
+
+PROMOTION_CHECK_HOUR = 9
+PROMOTION_CHECK_MINUTE = 30
