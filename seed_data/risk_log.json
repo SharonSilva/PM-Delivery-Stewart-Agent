@@ -23,6 +23,14 @@
       "item_id": null,
       "owner": null,
       "created_at": "2026-08-17T09:00:00"
+    },
+    {
+      "id": "R-004",
+      "description": "Implement OAuth flow (T-003) is currently blocked and has no corresponding risk-log entry.",
+      "impact": "Medium",
+      "item_id": "T-003",
+      "owner": "Bob Martinez",
+      "created_at": null
     }
   ]
 }
