@@ -2,9 +2,10 @@ from datetime import date, datetime
 
 from models.snapshot import Snapshot
 from models.weekly_report import WeeklyReportFacts, RankedRisk, ScopeChangeItem
-from storage.risk_log_store import load_risk_log
+from adapters.risk_log_adapter import RiskLogAdapter
+from mocks.risk_log_mock import MockRiskLogAdapter
 from storage.weekly_report_store import get_latest_weekly_report_facts, save_weekly_report_facts
-from storage.brief_facts_service import SPRINT_2_START, SPRINT_2_NAME
+from storage.brief_facts_service import SPRINT_2_START, SPRINT_2_END, SPRINT_2_NAME
 
 SPRINT_1_START = date(2026, 8, 3)
 SPRINT_1_END = date(2026, 8, 14)
@@ -24,20 +25,25 @@ def _rank_risks(risks: list[dict]) -> list[RankedRisk]:
     ]
 
 
-def extract_weekly_report_facts(snapshot: Snapshot) -> WeeklyReportFacts:
+def extract_weekly_report_facts(snapshot: Snapshot, risk_log: RiskLogAdapter = None) -> WeeklyReportFacts:
     """Deterministic extraction for the weekly report. 'The week'
     is defined as sprint-start-to-latest-snapshot (Sprint 2 to
     date), NOT a fabricated fixed 7-day window, since our real
     transition data doesn't span a full week yet.
+
+    risk_log is accepted as a parameter (interface type), defaulting
+    to the mock - lets a real integration be swapped in without
+    touching this function.
     """
+    if risk_log is None:
+        risk_log = MockRiskLogAdapter()
+
     week_start = SPRINT_2_START
     week_end = snapshot.taken_at.date()
     elapsed_days = max((week_end - week_start).days, 1)  # avoid div-by-zero on day 0
 
     item_titles = {item.id: item.title for item in snapshot.items}
 
-    # Items completed within this period: last transition to Done
-    # falls within [week_start, week_end].
     done_item_ids = {item.id for item in snapshot.items if item.status == "Done"}
     completed_this_period = []
     for item_id in done_item_ids:
@@ -54,9 +60,6 @@ def extract_weekly_report_facts(snapshot: Snapshot) -> WeeklyReportFacts:
     items_completed_count = len(completed_this_period)
     velocity_rate = round(items_completed_count / elapsed_days, 2)
 
-    # Prior period comparison: use the LAST PERSISTED weekly report
-    # if one exists (genuine second-run comparison), else fall back
-    # to Sprint 1 as a real, complete comparison basis, else None.
     prior_facts = get_latest_weekly_report_facts()
     if prior_facts:
         prior_period_label = prior_facts["sprint_name"] + f" ({prior_facts['week_start']} to {prior_facts['week_end']})"
@@ -87,21 +90,13 @@ def extract_weekly_report_facts(snapshot: Snapshot) -> WeeklyReportFacts:
             prior_period_items_completed = None
             prior_period_velocity_rate = None
 
-    # Scope change: items created after sprint start (mid-sprint additions)
-    # Sprint 2 date range - used to determine sprint membership
-    # from created_at, since WorkItem has no explicit sprint field
-    # (the seed data JSON has one, but it was never part of the
-    # Pydantic model, so it has always been silently dropped on
-    # load - this is the correct fix, not bolting the field on
-    # reactively).
-    from storage.brief_facts_service import SPRINT_2_END
     scope_added = [
         ScopeChangeItem(item_id=item.id, title=item.title, created_at=item.created_at.isoformat())
         for item in snapshot.items
         if week_start < item.created_at.date() <= SPRINT_2_END
     ]
 
-    risks = load_risk_log()
+    risks = risk_log.load_risks()
     top_risks = _rank_risks(risks)
     decisions_needed = [r for r in top_risks if r.owner is None]
 

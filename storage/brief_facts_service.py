@@ -2,7 +2,8 @@ from datetime import date, datetime, timedelta
 
 from models.snapshot import Snapshot
 from models.brief_facts import BriefFacts, PersonStatus, BlockerFact
-from storage.risk_log_store import load_risk_log
+from adapters.risk_log_adapter import RiskLogAdapter
+from mocks.risk_log_mock import MockRiskLogAdapter
 
 SPRINT_2_START = date(2026, 8, 17)
 SPRINT_2_END = date(2026, 8, 28)
@@ -29,9 +30,7 @@ def _had_recent_activity(person: str, snapshot: Snapshot, as_of: datetime) -> bo
     having an assigned item that merely sits in some status is
     NOT activity."""
     window_start = as_of - timedelta(days=ACTIVITY_WINDOW_DAYS)
-
     person_item_ids = {i.id for i in snapshot.items if i.assignee == person}
-
     for t in snapshot.transitions:
         if t.item_id in person_item_ids and window_start <= t.timestamp <= as_of:
             return True
@@ -44,8 +43,15 @@ def _had_recent_activity(person: str, snapshot: Snapshot, as_of: datetime) -> bo
     return False
 
 
-def extract_brief_facts(snapshot: Snapshot) -> BriefFacts:
-    risks = load_risk_log()
+def extract_brief_facts(snapshot: Snapshot, risk_log: RiskLogAdapter = None) -> BriefFacts:
+    """risk_log is accepted as a parameter (interface type),
+    defaulting to the mock - lets a real integration be swapped in
+    without touching this function or any of its callers (P2, P9,
+    P11 all call this with just a snapshot and get the default)."""
+    if risk_log is None:
+        risk_log = MockRiskLogAdapter()
+
+    risks = risk_log.load_risks()
     risk_item_ids = {r["item_id"] for r in risks if r.get("item_id")}
 
     as_of = snapshot.taken_at

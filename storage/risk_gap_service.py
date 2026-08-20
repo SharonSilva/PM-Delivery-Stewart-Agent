@@ -2,9 +2,9 @@ from datetime import datetime
 
 from models.snapshot import Snapshot
 from models.proposal import Proposal, ProposalStatus
-from storage.risk_log_store import load_risk_log
+from adapters.risk_log_adapter import RiskLogAdapter
+from mocks.risk_log_mock import MockRiskLogAdapter
 from storage.proposal_store import get_all_proposals, save_proposal
-
 
 PROPOSAL_TYPE = "risk_gap_fill"
 
@@ -31,12 +31,20 @@ def _already_has_proposal(item_id: str) -> bool:
     )
 
 
-def detect_risk_gaps(snapshot: Snapshot) -> list[Proposal]:
+def detect_risk_gaps(snapshot: Snapshot, risk_log: RiskLogAdapter = None) -> list[Proposal]:
     """For each blocker not in the risk log AND not already
     proposed before (in any status), create a new pending proposal
     with a draft risk entry. Returns the list of newly-created
-    proposals (not proposals that already existed)."""
-    risks = load_risk_log()
+    proposals (not proposals that already existed).
+
+    risk_log is accepted as a parameter (interface type), defaulting
+    to the mock - this is what lets a real integration be swapped in
+    later without touching this function, and what a central
+    adapter factory will supply going forward."""
+    if risk_log is None:
+        risk_log = MockRiskLogAdapter()
+
+    risks = risk_log.load_risks()
     risk_item_ids = {r["item_id"] for r in risks if r.get("item_id")}
 
     new_proposals = []

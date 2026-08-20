@@ -2,7 +2,8 @@ from datetime import datetime
 
 from models.snapshot import Snapshot
 from models.proposal import Proposal
-from storage.risk_log_store import load_risk_log
+from adapters.risk_log_adapter import RiskLogAdapter
+from mocks.risk_log_mock import MockRiskLogAdapter
 from storage.proposal_store import get_all_proposals, save_proposal
 from storage.brief_facts_service import _days_blocked
 from config.scheduler_config import BLOCKER_PROMOTION_THRESHOLD_DAYS
@@ -23,15 +24,22 @@ def _already_has_proposal(item_id: str) -> bool:
 def detect_promotion_candidates(
     snapshot: Snapshot,
     threshold_days: int = BLOCKER_PROMOTION_THRESHOLD_DAYS,
+    risk_log: RiskLogAdapter = None,
 ) -> list[Proposal]:
     """For each currently-blocked item whose age (from transitions)
     is >= threshold_days, and which hasn't already been proposed
     for promotion, create a draft promotion proposal with mitigation
     wording and the age evidence. threshold_days defaults to config
     but is a real parameter - this is what makes the threshold
-    genuinely configuration, not a hardcoded literal, and lets the
-    golden case prove that changing it changes the result."""
-    risks = load_risk_log()
+    genuinely configuration, not a hardcoded literal.
+
+    risk_log is accepted as a parameter (interface type), defaulting
+    to the mock - lets a real integration be swapped in without
+    touching this function."""
+    if risk_log is None:
+        risk_log = MockRiskLogAdapter()
+
+    risks = risk_log.load_risks()
     risk_item_ids = {r["item_id"] for r in risks if r.get("item_id")}
 
     as_of = snapshot.taken_at
