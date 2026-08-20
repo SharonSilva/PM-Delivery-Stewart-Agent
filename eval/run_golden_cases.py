@@ -16,12 +16,14 @@ from eval.golden_cases import (
 )
 from eval.golden_case_4 import golden_case_4_gap_detection
 from eval.golden_case_5 import golden_case_5_promotion_threshold
+from eval.golden_case_8 import golden_case_8_consent_gate
 
 CASES = [
     ("Golden Case 1: Citation rate", golden_case_1_citation_rate),
     ("Golden Case 2: Fabrication probe", golden_case_2_fabrication_probe),
     ("Golden Case 4: Gap-detection precision", golden_case_4_gap_detection),
     ("Golden Case 5: Promotion threshold config", golden_case_5_promotion_threshold),
+    ("Golden Case 8: Consent gate", golden_case_8_consent_gate),
     ("Golden Case 9: Determinism", golden_case_9_determinism),
 ]
 

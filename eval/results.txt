@@ -1,9 +1,10 @@
-Eval run at 2026-08-20T09:46:28.316349
+Eval run at 2026-08-20T10:18:10.939225
 
 [PASS] Golden Case 1: Citation rate: measured=1.0 target=0.9 | 27/27 lines had valid, resolvable references
 [PASS] Golden Case 2: Fabrication probe: measured=0 target=0 | 0 fabricated claims found; zero-activity case (Sam Okafor) correctly handled: True
 [PASS] Golden Case 4: Gap-detection precision: measured=True target=True | first run proposed {'T-004', 'T-003'}, expected {'T-004', 'T-003'}; after rejecting RISK-GAP-T-003 and re-running: 0 new proposals (expected 0)
 [PASS] Golden Case 5: Promotion threshold config: measured=True target=True | threshold=2 proposed {'T-003'}, threshold=4 proposed {'T-003'}
+[PASS] Golden Case 8: Consent gate: measured=True target=True | MO-001 processed with proposals: True; MO-002 refused with reason: True; refusal logged to file: True
 [PASS] Golden Case 9: Determinism: measured=True target=True | Facts extracted twice from the same snapshot are identical
 
 Overall: ALL PASSED
