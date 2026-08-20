@@ -1,61 +1,86 @@
 """
-Golden Case 6: every quantitative claim in the weekly report is
-reproducible from the stored snapshots, and the scope-change
-section correctly identifies items added mid-sprint.
+Golden Case 6: approval enforcement. An automated test attempting
+writes for pending and rejected proposals directly against the
+service layer - both must fail. Also asserts the audit record
+captures approver, timestamp, original proposal, and applied
+(final) payload correctly, including the edit-then-approve case
+where original and final genuinely differ.
 """
 from datetime import datetime
-from pathlib import Path
 
-from mocks.tracker_mock import MockTrackerAdapter
-from mocks.codehost_mock import MockCodeHostAdapter
-from mocks.chat_mock import MockChatAdapter
-from storage.snapshot_service import take_snapshot
-from storage.weekly_report_service import extract_weekly_report_facts
-from mocks.risk_log_mock import MockRiskLogAdapter
-
-ANCHOR = datetime(2026, 8, 18, 18, 0, 0)
-EXPECTED_SCOPE_ADDED = {"T-019", "T-020"}
+from models.proposal import Proposal, ProposalStatus
+from mocks.proposal_store_sqlite import SqliteProposalStoreAdapter
+from approval.approval_service import submit_proposal, approve, edit_then_approve, reject
+from approval.write_gate import execute_approved_write, WriteBlockedError
 
 
-def golden_case_6_weekly_report():
-    # Self-cleaning: clear persisted history so this run's prior-
-    # period comparison is deterministic (real Sprint 1, not a
-    # leftover self-comparison from an earlier test run).
-    store = Path("storage/weekly_reports.jsonl")
-    if store.exists():
-        store.unlink()
+def golden_case_6_approval_enforcement():
+    store = SqliteProposalStoreAdapter()
+    written = []
 
-    tracker = MockTrackerAdapter()
-    codehost = MockCodeHostAdapter()
-    chat = MockChatAdapter()
-    snapshot = take_snapshot(tracker, codehost, chat, as_of=ANCHOR)
+    def fake_write(payload):
+        written.append(payload)
 
-    risk_log = MockRiskLogAdapter()
-    facts = extract_weekly_report_facts(snapshot, risk_log)
+    results = {}
 
-    # Reproducibility check: re-derive items_completed_count directly
-    # from the snapshot, independent of the facts extraction code path,
-    # and confirm it matches.
-    done_ids = {item.id for item in snapshot.items if item.status == "Done"}
-    reproduced_count = 0
-    for item_id in done_ids:
-        done_transitions = [
-            t for t in snapshot.transitions
-            if t.item_id == item_id and t.to_status == "Done"
-        ]
-        if done_transitions:
-            latest = max(done_transitions, key=lambda t: t.timestamp)
-            if facts.week_start <= latest.timestamp.date().isoformat() <= facts.week_end:
-                reproduced_count += 1
-    count_reproducible = reproduced_count == facts.items_completed_count
-
-    scope_ids = {s.item_id for s in facts.scope_added_mid_sprint}
-    scope_correct = scope_ids == EXPECTED_SCOPE_ADDED
-
-    passed = count_reproducible and scope_correct
-    detail = (
-        f"items_completed_count reproducible from snapshot: {count_reproducible} "
-        f"({reproduced_count} vs {facts.items_completed_count}); "
-        f"scope-change correctly identifies {scope_ids} (expected {EXPECTED_SCOPE_ADDED})"
+    # --- Pending: direct write attempt must fail ---
+    p_pending = Proposal(
+        id="GC6-PENDING", proposal_type="test", source_ref="X",
+        original_payload={"a": 1}, created_at=datetime.now(),
     )
+    submit_proposal(p_pending, store)
+    try:
+        execute_approved_write("GC6-PENDING", fake_write, store)
+        results["pending_blocked"] = False
+    except WriteBlockedError:
+        results["pending_blocked"] = True
+
+    # --- Rejected: direct write attempt must fail ---
+    p_rejected = Proposal(
+        id="GC6-REJECTED", proposal_type="test", source_ref="Y",
+        original_payload={"a": 2}, created_at=datetime.now(),
+    )
+    submit_proposal(p_rejected, store)
+    reject("GC6-REJECTED", approver="eval-harness", store=store)
+    try:
+        execute_approved_write("GC6-REJECTED", fake_write, store)
+        results["rejected_blocked"] = False
+    except WriteBlockedError:
+        results["rejected_blocked"] = True
+
+    # --- Approved as-is: write must succeed, audit trail correct ---
+    p_approved = Proposal(
+        id="GC6-APPROVED", proposal_type="test", source_ref="Z",
+        original_payload={"a": 3}, created_at=datetime.now(),
+    )
+    submit_proposal(p_approved, store)
+    approve("GC6-APPROVED", approver="lead@example.com", store=store)
+    execute_approved_write("GC6-APPROVED", fake_write, store)
+    audit_approved = store.get("GC6-APPROVED")
+    results["approved_write_succeeded"] = written[-1] == {"a": 3}
+    results["approved_audit_correct"] = (
+        audit_approved.approver == "lead@example.com"
+        and audit_approved.decided_at is not None
+        and audit_approved.original_payload == {"a": 3}
+        and audit_approved.final_payload == {"a": 3}
+    )
+
+    # --- Edit-then-approve: final_payload must differ from original, both retained ---
+    p_edited = Proposal(
+        id="GC6-EDITED", proposal_type="test", source_ref="W",
+        original_payload={"a": 4, "note": "draft"}, created_at=datetime.now(),
+    )
+    submit_proposal(p_edited, store)
+    edit_then_approve("GC6-EDITED", approver="lead@example.com", edited_payload={"a": 4, "note": "edited by lead"}, store=store)
+    execute_approved_write("GC6-EDITED", fake_write, store)
+    audit_edited = store.get("GC6-EDITED")
+    results["edit_write_used_final_not_original"] = written[-1] == {"a": 4, "note": "edited by lead"}
+    results["edit_audit_retains_both"] = (
+        audit_edited.original_payload == {"a": 4, "note": "draft"}
+        and audit_edited.final_payload == {"a": 4, "note": "edited by lead"}
+        and audit_edited.approver == "lead@example.com"
+    )
+
+    passed = all(results.values())
+    detail = "; ".join(f"{k}: {v}" for k, v in results.items())
     return passed, passed, True, detail

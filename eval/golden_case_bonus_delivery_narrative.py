@@ -18,7 +18,7 @@ from storage.delivery_narrative_narration_service import _contains_causal_assert
 ANCHOR = datetime(2026, 8, 18, 18, 0, 0)
 
 
-def golden_case_11_delivery_narrative():
+def golden_case_bonus_delivery_narrative():
     # Self-cleaning: ensure a genuine (not self-compared) velocity
     # direction for this run.
     store = Path("storage/weekly_reports.jsonl")

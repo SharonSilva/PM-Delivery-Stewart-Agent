@@ -15,7 +15,7 @@ import storage.sprint_planning_service as sps
 ANCHOR = datetime(2026, 8, 18, 18, 0, 0)
 
 
-def golden_case_10_sprint_planning():
+def golden_case_bonus_sprint_planning():
     tracker = MockTrackerAdapter()
     codehost = MockCodeHostAdapter()
     chat = MockChatAdapter()

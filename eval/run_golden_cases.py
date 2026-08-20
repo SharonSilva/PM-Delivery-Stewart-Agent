@@ -2,6 +2,12 @@
 Runs all implemented golden test cases and prints/writes one line
 per metric with measured value and target. Run with:
     python3.11 eval/run_golden_cases.py
+
+Cases 1-9 match the brief's own numbering exactly. Cases beyond 9
+are additional, self-imposed tests covering capabilities beyond the
+brief's required 9 (weekly report, sprint planning, delivery
+narrative) - labeled BONUS so they're never confused with the
+brief's own required set.
 """
 import sys
 from datetime import datetime
@@ -16,23 +22,25 @@ from eval.golden_cases import (
 )
 from eval.golden_case_4 import golden_case_4_gap_detection
 from eval.golden_case_5 import golden_case_5_promotion_threshold
-from eval.golden_case_6 import golden_case_6_weekly_report
+from eval.golden_case_6 import golden_case_6_approval_enforcement
 from eval.golden_case_7 import golden_case_7_nudge_and_escalation
 from eval.golden_case_8 import golden_case_8_consent_gate
-from eval.golden_case_10 import golden_case_10_sprint_planning
-from eval.golden_case_11 import golden_case_11_delivery_narrative
+from eval.golden_case_bonus_weekly_report import golden_case_bonus_weekly_report
+from eval.golden_case_bonus_sprint_planning import golden_case_bonus_sprint_planning
+from eval.golden_case_bonus_delivery_narrative import golden_case_bonus_delivery_narrative
 
 CASES = [
     ("Golden Case 1: Citation rate", golden_case_1_citation_rate),
     ("Golden Case 2: Fabrication probe", golden_case_2_fabrication_probe),
     ("Golden Case 4: Gap-detection precision", golden_case_4_gap_detection),
     ("Golden Case 5: Promotion threshold config", golden_case_5_promotion_threshold),
-    ("Golden Case 6: Weekly report reproducibility", golden_case_6_weekly_report),
+    ("Golden Case 6: Approval enforcement", golden_case_6_approval_enforcement),
     ("Golden Case 7: Nudge cap and escalation order", golden_case_7_nudge_and_escalation),
     ("Golden Case 8: Consent gate", golden_case_8_consent_gate),
     ("Golden Case 9: Determinism", golden_case_9_determinism),
-    ("Golden Case 10: Sprint planning pack", golden_case_10_sprint_planning),
-    ("Golden Case 11: Delivery narrative", golden_case_11_delivery_narrative),
+    ("[BONUS] Weekly report reproducibility", golden_case_bonus_weekly_report),
+    ("[BONUS] Sprint planning pack", golden_case_bonus_sprint_planning),
+    ("[BONUS] Delivery narrative", golden_case_bonus_delivery_narrative),
 ]
 
 
