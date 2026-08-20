@@ -4,7 +4,8 @@ from models.snapshot import Snapshot
 from models.proposal import Proposal, ProposalStatus
 from adapters.risk_log_adapter import RiskLogAdapter
 from mocks.risk_log_mock import MockRiskLogAdapter
-from storage.proposal_store import get_all_proposals, save_proposal
+from adapters.proposal_store_adapter import ProposalStoreAdapter
+from mocks.proposal_store_sqlite import SqliteProposalStoreAdapter
 
 PROPOSAL_TYPE = "risk_gap_fill"
 
@@ -19,19 +20,19 @@ def _blocker_facts(snapshot: Snapshot) -> list[dict]:
     ]
 
 
-def _already_has_proposal(item_id: str) -> bool:
+def _already_has_proposal(item_id: str, store: ProposalStoreAdapter) -> bool:
     """True if ANY proposal (pending, approved, or rejected) already
     exists for this blocker's gap-fill. This is what prevents
     re-proposing an identical entry after rejection - the check is
     on prior proposals, not just the current risk log state."""
-    existing = get_all_proposals()
+    existing = store.get_all()
     return any(
         p.proposal_type == PROPOSAL_TYPE and p.source_ref == item_id
         for p in existing
     )
 
 
-def detect_risk_gaps(snapshot: Snapshot, risk_log: RiskLogAdapter = None) -> list[Proposal]:
+def detect_risk_gaps(snapshot: Snapshot, risk_log: RiskLogAdapter = None, store: ProposalStoreAdapter = None) -> list[Proposal]:
     """For each blocker not in the risk log AND not already
     proposed before (in any status), create a new pending proposal
     with a draft risk entry. Returns the list of newly-created
@@ -43,6 +44,8 @@ def detect_risk_gaps(snapshot: Snapshot, risk_log: RiskLogAdapter = None) -> lis
     adapter factory will supply going forward."""
     if risk_log is None:
         risk_log = MockRiskLogAdapter()
+    if store is None:
+        store = SqliteProposalStoreAdapter()
 
     risks = risk_log.load_risks()
     risk_item_ids = {r["item_id"] for r in risks if r.get("item_id")}
@@ -53,7 +56,7 @@ def detect_risk_gaps(snapshot: Snapshot, risk_log: RiskLogAdapter = None) -> lis
 
         if item_id in risk_item_ids:
             continue  # already has a real risk entry
-        if _already_has_proposal(item_id):
+        if _already_has_proposal(item_id, store):
             continue  # already proposed before (any status) - don't duplicate
 
         payload = {
@@ -70,7 +73,7 @@ def detect_risk_gaps(snapshot: Snapshot, risk_log: RiskLogAdapter = None) -> lis
             original_payload=payload,
             created_at=datetime.now(),
         )
-        save_proposal(proposal)
+        store.save(proposal)
         new_proposals.append(proposal)
 
     return new_proposals

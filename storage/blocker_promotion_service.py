@@ -4,17 +4,18 @@ from models.snapshot import Snapshot
 from models.proposal import Proposal
 from adapters.risk_log_adapter import RiskLogAdapter
 from mocks.risk_log_mock import MockRiskLogAdapter
-from storage.proposal_store import get_all_proposals, save_proposal
+from adapters.proposal_store_adapter import ProposalStoreAdapter
+from mocks.proposal_store_sqlite import SqliteProposalStoreAdapter
 from storage.brief_facts_service import _days_blocked
 from config.scheduler_config import BLOCKER_PROMOTION_THRESHOLD_DAYS
 
 PROPOSAL_TYPE = "blocker_promotion"
 
 
-def _already_has_proposal(item_id: str) -> bool:
+def _already_has_proposal(item_id: str, store: ProposalStoreAdapter) -> bool:
     """Same dedup pattern as P4: any prior proposal (any status)
     for this item's promotion means don't propose again."""
-    existing = get_all_proposals()
+    existing = store.get_all()
     return any(
         p.proposal_type == PROPOSAL_TYPE and p.source_ref == item_id
         for p in existing
@@ -25,6 +26,7 @@ def detect_promotion_candidates(
     snapshot: Snapshot,
     threshold_days: int = BLOCKER_PROMOTION_THRESHOLD_DAYS,
     risk_log: RiskLogAdapter = None,
+    store: ProposalStoreAdapter = None,
 ) -> list[Proposal]:
     """For each currently-blocked item whose age (from transitions)
     is >= threshold_days, and which hasn't already been proposed
@@ -38,6 +40,8 @@ def detect_promotion_candidates(
     touching this function."""
     if risk_log is None:
         risk_log = MockRiskLogAdapter()
+    if store is None:
+        store = SqliteProposalStoreAdapter()
 
     risks = risk_log.load_risks()
     risk_item_ids = {r["item_id"] for r in risks if r.get("item_id")}
@@ -52,7 +56,7 @@ def detect_promotion_candidates(
         age_days = _days_blocked(item.id, snapshot.transitions, as_of)
         if age_days < threshold_days:
             continue
-        if _already_has_proposal(item.id):
+        if _already_has_proposal(item.id, store):
             continue
 
         already_a_risk = item.id in risk_item_ids
@@ -76,7 +80,7 @@ def detect_promotion_candidates(
             original_payload=payload,
             created_at=datetime.now(),
         )
-        save_proposal(proposal)
+        store.save(proposal)
         new_proposals.append(proposal)
 
     return new_proposals

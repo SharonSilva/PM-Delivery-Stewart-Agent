@@ -1,7 +1,8 @@
 from datetime import datetime
 
 from models.proposal import Proposal
-from storage.proposal_store import save_proposal
+from adapters.proposal_store_adapter import ProposalStoreAdapter
+from mocks.proposal_store_sqlite import SqliteProposalStoreAdapter
 from storage.refusal_log import log_refusal
 
 TRACKER_PROPOSAL_TYPE = "meeting_tracker_update"
@@ -16,12 +17,15 @@ class MeetingOutcomeResult:
         self.risk_proposals = risk_proposals or []
 
 
-def process_meeting_outcome(record: dict) -> MeetingOutcomeResult:
+def process_meeting_outcome(record: dict, store: ProposalStoreAdapter = None) -> MeetingOutcomeResult:
     """Consumes one meeting-outcome record. If consent is not
     exactly True, refuses OUTRIGHT - no proposal is created, the
     refusal is logged with a reason. This is a pre-proposal gate,
     distinct from the approval gate: a refused record never even
     reaches the point of being something a human could approve."""
+
+    if store is None:
+        store = SqliteProposalStoreAdapter()
 
     meeting_id = record["id"]
     consent = record.get("consent")
@@ -46,7 +50,7 @@ def process_meeting_outcome(record: dict) -> MeetingOutcomeResult:
             original_payload=payload,
             created_at=datetime.now(),
         )
-        save_proposal(proposal)
+        store.save(proposal)
         tracker_proposals.append(proposal)
 
     for i, action in enumerate(record.get("actions", [])):
@@ -65,7 +69,7 @@ def process_meeting_outcome(record: dict) -> MeetingOutcomeResult:
             original_payload=payload,
             created_at=datetime.now(),
         )
-        save_proposal(proposal)
+        store.save(proposal)
         tracker_proposals.append(proposal)
 
     risk_proposals = []
@@ -82,7 +86,7 @@ def process_meeting_outcome(record: dict) -> MeetingOutcomeResult:
             original_payload=payload,
             created_at=datetime.now(),
         )
-        save_proposal(proposal)
+        store.save(proposal)
         risk_proposals.append(proposal)
 
     return MeetingOutcomeResult(
