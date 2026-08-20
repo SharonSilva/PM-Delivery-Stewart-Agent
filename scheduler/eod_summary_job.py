@@ -4,6 +4,7 @@ from adapters.adapter_factory import get_tracker_adapter, get_codehost_adapter, 
 from storage.snapshot_service import take_snapshot
 from storage.snapshot_store import get_all_snapshots
 from storage.eod_delta_service import compute_eod_delta
+from storage.eod_summary_service import generate_eod_summary
 from scheduler.clock import clock
 
 
@@ -32,14 +33,7 @@ def run_eod_summary_job() -> str:
 
     morning_snapshot = min(todays_snapshots, key=lambda s: s.taken_at)
     delta = compute_eod_delta(morning_snapshot, eod_snapshot)
-
-    output = (
-        f"=== EOD Summary: {delta.sprint_name}, Day {delta.sprint_day} ===\n"
-        f"Shipped: {len(delta.shipped)} items\n"
-        f"Newly blocked: {len(delta.newly_blocked)} items\n"
-        f"Changed (other): {len(delta.changed_other)} items\n"
-        f"Still pending: {len(delta.still_pending)} items\n"
-        f"Meeting outcomes today: {len(delta.meeting_outcomes_today)}\n"
-    )
+    summary = generate_eod_summary(delta)
+    output = summary.render()
     print(output)
     return output

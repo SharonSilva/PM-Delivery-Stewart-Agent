@@ -59,8 +59,10 @@ Return ONLY valid JSON, no markdown fences, no explanation, matching this exact 
 {{"lines": [{{"text": "...", "source_ref": "..."}}]}}
 
 STRICT RULE: base your summary ONLY on the evidence below. Do not invent any detail
-beyond what is stated. Do not mention the item's title or wrap it in quotes -
-just describe what happened using the evidence. The title will be added separately.
+beyond what is stated. Do not mention the item's title, ID, or any identifying
+number, and do not wrap anything in quotes - just describe what happened using
+the evidence. The title and ID will both be added separately in code, after
+your response, so any ID or number you write yourself would not be real.
 
 Status this morning: {delta.morning_status}
 Status at end of day: {delta.eod_status}
@@ -69,8 +71,9 @@ Status at end of day: {delta.eod_status}
 Evidence:
 {evidence_text}
 
-Write ONE line describing what happened today for this item, and set source_ref to
-its item ID exactly."""
+Write ONE line describing what happened today for this item - do not include
+any item ID or number in the text itself. Set source_ref to "{delta.item_id}"
+exactly (this is a separate field, not part of your description)."""
 
     result = _call_with_retry(prompt)
     if not result.lines:

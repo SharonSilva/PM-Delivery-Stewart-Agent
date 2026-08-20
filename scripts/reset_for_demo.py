@@ -25,6 +25,22 @@ from pathlib import Path
 from storage.db import get_connection, init_db
 
 
+def reset_snapshots_table():
+    """Every take_snapshot() call persists a row to the snapshots
+    table (storage/snapshot_store.py). Left unreset, these accumulate
+    across every test run this session, and the EOD summary job
+    picks whatever falls in today window as the morning baseline -
+    which could be a leftover snapshot from unrelated testing, not
+    a deliberate demo run."""
+    init_db()
+    conn = get_connection()
+    count = conn.execute("SELECT COUNT(*) FROM snapshots").fetchone()[0]
+    conn.execute("DELETE FROM snapshots")
+    conn.commit()
+    conn.close()
+    print(f"Cleared {count} persisted snapshot(s) from the database.")
+
+
 def reset_proposals_table():
     init_db()
     conn = get_connection()
@@ -75,6 +91,7 @@ def reset_risk_log():
 
 def main():
     print("=== Resetting demo state to a clean baseline ===\n")
+    reset_snapshots_table()
     reset_proposals_table()
     reset_file("storage/weekly_reports.jsonl", "persisted weekly-report history")
     reset_file("storage/notifications.jsonl", "notification (nudge/escalation) log")
