@@ -1,0 +1,1 @@
+{"prompt": "Write ONE short sentence noting that N items carried over from a prior sprint,\nwithout naming them individually (they'll be listed separately).\nReturn ONLY valid JSON: {\"lines\": [{\"text\": \"...\", \"source_ref\": \"carryover\"}]}\nN = 20\n", "response": "{\"lines\": [{\"text\": \"20 items carried over from a prior sprint\", \"source_ref\": \"carryover\"}]}"}

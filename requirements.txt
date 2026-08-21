@@ -3,3 +3,4 @@ ollama>=0.3.0
 apscheduler>=3.10
 mcp>=2.0.0
 streamlit>=1.60
+pytest>=8.0

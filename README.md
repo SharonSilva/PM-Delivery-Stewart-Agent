@@ -48,6 +48,11 @@ cp .env.example .env
 ollama pull qwen2.5:7b-instruct
 ```
 
+**Run the unit test suite** (parsing/validation logic, isolated from the LLM):
+```bash
+python3.11 -m pytest tests/ -v
+```
+
 **Run the eval harness:**
 ```bash
 python3.11 eval/run_golden_cases.py
