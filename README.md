@@ -22,6 +22,7 @@ Built as a 7-day intern challenge. The brief's task catalog and scope are delibe
 | - | Eval harness | Required | Done | 12 cases: the brief 9 (matching their spec exactly) + 3 disclosed bonus cases |
 | - | Real scheduler with clock override | Required | Done | APScheduler, scheduler/clock.py supports demo overrides |
 | - | MCP tool integration | Bonus | Done | 5 tools exposing morning brief, EOD summary, and the approval flow - see docs/mcp_schema.md |
+| - | Approval UI (Streamlit) | Bonus | Done | Pending-proposal queue with approve/reject/edit-then-approve and a full audit trail - ui/approval_app.py |
 
 **Not built:** anything beyond the above. No real external integrations (by design — mocks only, per the brief's ground rules). No auth/multi-tenancy. No visual UI beyond console output.
 
@@ -49,6 +50,11 @@ python3.11 -c "
 from scheduler.morning_brief_job import run_morning_brief_job
 run_morning_brief_job()
 "
+```
+
+**Run the approval UI** (the review-and-approve surface):
+```bash
+streamlit run ui/approval_app.py
 ```
 
 **Run the MCP server** (exposes the agent as tools other MCP clients can call):
