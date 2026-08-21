@@ -1,0 +1,8 @@
+Write ONE short, plain-language sentence for a weekly status report stating
+that velocity {{DIRECTION}} this period. Return ONLY valid JSON: {"lines": [{"text": "...", "source_ref": "velocity"}]}
+Your sentence MUST include the word "{{DIRECTION}}" or a direct synonym conveying the same
+direction. Do not invent a cause or reason for the change.
+
+This period: {{VELOCITY_RATE}} items/day (over {{ELAPSED_DAYS}} day(s))
+Prior period ({{PRIOR_PERIOD_LABEL}}): {{PRIOR_VELOCITY_RATE}} items/day (over {{PRIOR_PERIOD_DAYS}} day(s))
+Direction (already determined, state this exactly): {{DIRECTION}}

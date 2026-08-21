@@ -1,0 +1,4 @@
+Write ONE short sentence noting that new items were added to sprint scope
+after planning. Return ONLY valid JSON: {"lines": [{"text": "...", "source_ref": "scope"}]}
+Do NOT name the specific items - just state that N items were added. The items will be
+listed separately afterward. N = {{SCOPE_COUNT}}

@@ -1,0 +1,7 @@
+Write ONE short sentence summarizing progress for a weekly status report.
+Return ONLY valid JSON: {"lines": [{"text": "...", "source_ref": "{{SPRINT_NAME}}"}]}
+Do not invent any number not given below. Do not claim a full week has elapsed if it has not.
+
+Sprint: {{SPRINT_NAME}}
+Period covered: {{WEEK_START}} to {{WEEK_END}} ({{ELAPSED_DAYS}} elapsed day(s))
+Items completed in this period: {{ITEMS_COMPLETED_COUNT}}

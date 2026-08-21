@@ -1,3 +1,4 @@
+from storage.prompt_loader import load_prompt
 import json
 
 from pydantic import ValidationError
@@ -35,13 +36,14 @@ def _call_with_retry(prompt: str) -> NarratedBrief:
 
 
 def narrate_progress(facts: WeeklyReportFacts) -> str:
-    prompt = f"""Write ONE short sentence summarizing progress for a weekly status report.
-Return ONLY valid JSON: {{"lines": [{{"text": "...", "source_ref": "{facts.sprint_name}"}}]}}
-Do not invent any number not given below. Do not claim a full week has elapsed if it has not.
-
-Sprint: {facts.sprint_name}
-Period covered: {facts.week_start} to {facts.week_end} ({facts.elapsed_days} elapsed day(s))
-Items completed in this period: {facts.items_completed_count}"""
+    prompt = load_prompt(
+        "weekly_progress_summary",
+        SPRINT_NAME=facts.sprint_name,
+        WEEK_START=facts.week_start,
+        WEEK_END=facts.week_end,
+        ELAPSED_DAYS=facts.elapsed_days,
+        ITEMS_COMPLETED_COUNT=facts.items_completed_count,
+    )
     result = _call_with_retry(prompt)
     text = result.lines[0].text if result.lines else f"{facts.items_completed_count} items completed over {facts.elapsed_days} day(s)."
     return text
@@ -51,10 +53,10 @@ def narrate_scope_change(facts: WeeklyReportFacts) -> str:
     if not facts.scope_added_mid_sprint:
         return "No items were added to scope mid-sprint."
 
-    prompt = f"""Write ONE short sentence noting that new items were added to sprint scope
-after planning. Return ONLY valid JSON: {{"lines": [{{"text": "...", "source_ref": "scope"}}]}}
-Do NOT name the specific items - just state that N items were added. The items will be
-listed separately afterward. N = {len(facts.scope_added_mid_sprint)}"""
+    prompt = load_prompt(
+        "weekly_scope_change",
+        SCOPE_COUNT=len(facts.scope_added_mid_sprint),
+    )
     result = _call_with_retry(prompt)
     summary = result.lines[0].text if result.lines else f"{len(facts.scope_added_mid_sprint)} item(s) added mid-sprint."
 
@@ -109,14 +111,15 @@ def narrate_velocity(facts: WeeklyReportFacts) -> str:
         f"compared to {facts.prior_period_label}'s {facts.prior_period_velocity_rate} items/day."
     )
 
-    prompt = f"""Write ONE short, plain-language sentence for a weekly status report stating
-that velocity {direction} this period. Return ONLY valid JSON: {{"lines": [{{"text": "...", "source_ref": "velocity"}}]}}
-Your sentence MUST include the word "{direction}" or a direct synonym conveying the same
-direction. Do not invent a cause or reason for the change.
-
-This period: {facts.velocity_rate} items/day (over {facts.elapsed_days} day(s))
-Prior period ({facts.prior_period_label}): {facts.prior_period_velocity_rate} items/day (over {facts.prior_period_days} day(s))
-Direction (already determined, state this exactly): {direction}"""
+    prompt = load_prompt(
+        "weekly_velocity",
+        DIRECTION=direction,
+        VELOCITY_RATE=facts.velocity_rate,
+        ELAPSED_DAYS=facts.elapsed_days,
+        PRIOR_PERIOD_LABEL=facts.prior_period_label,
+        PRIOR_VELOCITY_RATE=facts.prior_period_velocity_rate,
+        PRIOR_PERIOD_DAYS=facts.prior_period_days,
+    )
 
     result = _call_with_retry(prompt)
     if not result.lines:
