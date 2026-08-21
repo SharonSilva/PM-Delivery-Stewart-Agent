@@ -15,14 +15,23 @@ proposal) is identical either way.
 Schema version: 1.0 (see docs/mcp_schema.md for the versioned, documented
 tool contracts).
 """
+import os
 import sys
 from pathlib import Path
 from datetime import datetime
 
 # Claude Desktop launches this script with no guaranteed working
-# directory, so local packages like adapters/, storage/ would not
-# be importable without this - add the project root explicitly.
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+# directory. Two separate things depend on the working directory
+# being the project root: (1) importing local packages like
+# adapters/, storage/, and (2) every mock adapter's relative data
+# path (e.g. "seed_data/tracker_items.json"), which is resolved at
+# the moment a file is opened, not at import time. Fixing both by
+# changing the process's own working directory once, at startup,
+# is simpler and safer than patching every individual relative
+# path across the codebase.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+os.chdir(PROJECT_ROOT)
+sys.path.insert(0, str(PROJECT_ROOT))
 
 from mcp.server import MCPServer
 
