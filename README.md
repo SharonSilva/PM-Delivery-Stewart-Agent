@@ -22,9 +22,18 @@ Built as a 7-day intern challenge. The brief's task catalog and scope are delibe
 | - | Eval harness | Required | Done | 12 cases: the brief 9 (matching their spec exactly) + 3 disclosed bonus cases |
 | - | Real scheduler with clock override | Required | Done | APScheduler, scheduler/clock.py supports demo overrides |
 | - | MCP tool integration | Bonus | Done | 5 tools exposing morning brief, EOD summary, and the approval flow - see docs/mcp_schema.md |
-| - | Approval UI (Streamlit) | Bonus | Done | Pending-proposal queue with approve/reject/edit-then-approve and a full audit trail - ui/approval_app.py |
+| - | Approval UI (Streamlit) | Bonus | Done | 9 tabs covering the full functional scope (morning brief, EOD summary, blocker promotion, commitments, meeting outcomes, weekly report, sprint planning, delivery narrative, approval queue with approve/reject/edit-then-approve and a full audit trail) - ui/approval_app.py |
 
 **Not built:** anything beyond the above. No real external integrations (by design — mocks only, per the brief's ground rules). No auth/multi-tenancy. No visual UI beyond console output.
+
+
+## Why this stack
+
+- **Python 3.11** — fastest language to move in for this scope, and the toolkit doc's own suggested default.
+- **Local Ollama (qwen2.5:7b-instruct)** — zero cost, zero rate limit, zero network dependency; the toolkit doc explicitly notes smaller local models "need tighter prompts and stricter output schemas," which this project treats as a real constraint to design against (see the grounding/reference-or-drop discipline throughout), not a shortcut.
+- **SQLite** — the toolkit doc's own "default choice — zero setup," appropriate at this project's scale (a handful of tables, no concurrent-write pressure).
+- **APScheduler** — a real, demonstrable scheduler rather than a manually-triggered button standing in for one, per the ground rules' explicit warning against that substitution.
+- **No agent-orchestration framework** — plain functions with a fixed pipeline (facts → narration → validation → render), not a dispatch loop, because a dispatch loop would let the model decide what happens next - which conflicts with this project's core discipline that code always decides and the model only narrates.
 
 ## Setup
 
