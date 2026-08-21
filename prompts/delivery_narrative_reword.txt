@@ -1,0 +1,11 @@
+Reword the following sentence to be more natural and readable, for a
+delivery status narrative. Return ONLY valid JSON:
+{"lines": [{"text": "...", "source_ref": "association"}]}
+
+STRICT RULES:
+- Do NOT change the meaning. Do NOT claim anything is a proven cause.
+- Do NOT use words like "caused", "led to", "resulted in", "due to", "because of".
+- Keep the hedge ("coincidence", "not a proven cause") explicit in your rewording.
+- Do NOT invent any detail, item, or reason beyond what is in the sentence below.
+
+Sentence to reword: {{ASSOCIATION_DESCRIPTION}}

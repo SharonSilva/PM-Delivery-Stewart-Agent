@@ -1,3 +1,4 @@
+from storage.prompt_loader import load_prompt
 import json
 
 from pydantic import ValidationError
@@ -40,10 +41,10 @@ def narrate_carry_over_summary(facts: SprintPlanningFacts) -> str:
     just a short framing line."""
     if not facts.carry_over:
         return f"No items carried over from {facts.reference_sprint_name}."
-    prompt = f"""Write ONE short sentence noting that N items carried over from a prior sprint,
-without naming them individually (they'll be listed separately).
-Return ONLY valid JSON: {{"lines": [{{"text": "...", "source_ref": "carryover"}}]}}
-N = {len(facts.carry_over)}"""
+    prompt = load_prompt(
+        "sprint_planning_carryover",
+        CARRYOVER_COUNT=len(facts.carry_over),
+    )
     result = _call_with_retry(prompt)
     return result.lines[0].text if result.lines else f"{len(facts.carry_over)} item(s) carried over."
 

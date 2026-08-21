@@ -1,3 +1,4 @@
+from storage.prompt_loader import load_prompt
 import json
 import re
 
@@ -60,17 +61,10 @@ def narrate_association(association: TemporalAssociation) -> str:
     used as-is. This is reference-or-drop applied to epistemic
     honesty, not just factual grounding."""
 
-    prompt = f"""Reword the following sentence to be more natural and readable, for a
-delivery status narrative. Return ONLY valid JSON:
-{{"lines": [{{"text": "...", "source_ref": "association"}}]}}
-
-STRICT RULES:
-- Do NOT change the meaning. Do NOT claim anything is a proven cause.
-- Do NOT use words like "caused", "led to", "resulted in", "due to", "because of".
-- Keep the hedge ("coincidence", "not a proven cause") explicit in your rewording.
-- Do NOT invent any detail, item, or reason beyond what is in the sentence below.
-
-Sentence to reword: {association.description}"""
+    prompt = load_prompt(
+        "delivery_narrative_reword",
+        ASSOCIATION_DESCRIPTION=association.description,
+    )
 
     result = _call_with_retry(prompt)
     if not result.lines:

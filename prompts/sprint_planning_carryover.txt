@@ -1,0 +1,4 @@
+Write ONE short sentence noting that N items carried over from a prior sprint,
+without naming them individually (they'll be listed separately).
+Return ONLY valid JSON: {"lines": [{"text": "...", "source_ref": "carryover"}]}
+N = {{CARRYOVER_COUNT}}
