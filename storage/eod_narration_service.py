@@ -1,3 +1,4 @@
+from storage.prompt_loader import load_prompt
 import json
 
 from pydantic import ValidationError
@@ -54,26 +55,14 @@ def narrate_item_delta_raw(delta: ItemDelta) -> BriefLine:
         if delta.flapped else ""
     )
 
-    prompt = f"""You are writing one line of an end-of-day delivery summary about a single item.
-Return ONLY valid JSON, no markdown fences, no explanation, matching this exact shape:
-{{"lines": [{{"text": "...", "source_ref": "..."}}]}}
-
-STRICT RULE: base your summary ONLY on the evidence below. Do not invent any detail
-beyond what is stated. Do not mention the item's title, ID, or any identifying
-number, and do not wrap anything in quotes - just describe what happened using
-the evidence. The title and ID will both be added separately in code, after
-your response, so any ID or number you write yourself would not be real.
-
-Status this morning: {delta.morning_status}
-Status at end of day: {delta.eod_status}
-{flap_note}
-
-Evidence:
-{evidence_text}
-
-Write ONE line describing what happened today for this item - do not include
-any item ID or number in the text itself. Set source_ref to "{delta.item_id}"
-exactly (this is a separate field, not part of your description)."""
+    prompt = load_prompt(
+        "eod_item_delta",
+        MORNING_STATUS=delta.morning_status,
+        EOD_STATUS=delta.eod_status,
+        FLAP_NOTE=flap_note,
+        EVIDENCE_TEXT=evidence_text,
+        ITEM_ID=delta.item_id,
+    )
 
     result = _call_with_retry(prompt)
     if not result.lines:
