@@ -21,6 +21,7 @@ Built as a 7-day intern challenge. The brief's task catalog and scope are delibe
 | P11 | Delivery narrative | COULD | Done | Correlation only, never cause - see decision log |
 | - | Eval harness | Required | Done | 12 cases: the brief 9 (matching their spec exactly) + 3 disclosed bonus cases |
 | - | Real scheduler with clock override | Required | Done | APScheduler, scheduler/clock.py supports demo overrides |
+| - | MCP tool integration | Bonus | Done | 5 tools exposing morning brief, EOD summary, and the approval flow - see docs/mcp_schema.md |
 
 **Not built:** anything beyond the above. No real external integrations (by design — mocks only, per the brief's ground rules). No auth/multi-tenancy. No visual UI beyond console output.
 
@@ -49,6 +50,12 @@ from scheduler.morning_brief_job import run_morning_brief_job
 run_morning_brief_job()
 "
 ```
+
+**Run the MCP server** (exposes the agent as tools other MCP clients can call):
+```bash
+python3.11 mcp_server/server.py
+```
+Schema documented at [docs/mcp_schema.md](docs/mcp_schema.md).
 
 **Reset to a clean demo state** (clears accumulated test-run state — proposals, logs, LLM cache — never touches the committed seed data):
 ```bash
