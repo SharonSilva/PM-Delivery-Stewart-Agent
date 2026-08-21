@@ -53,3 +53,23 @@ Early in the build, several service functions accepted an adapter as an optional
 ## Rate-limit handling - not demonstrated, disclosed instead
 
 Local Ollama has no rate limit, so no real rate-limit-error condition was ever triggered during development. The disclosed approach that would apply against a hosted API is documented in docs/rate_limit_disclosure.md.
+
+## MCP write dispatch - refuse honestly for unregistered proposal types, never silent no-op
+
+approve_proposal (both the MCP tool and the Streamlit UI) only has a real write-execution path for risk_gap_fill and blocker_promotion proposals. P8's meeting_tracker_update/meeting_risk_entry proposal types have no dedicated write function anywhere in the codebase yet - approving one is refused explicitly, with the approval itself not recorded, rather than silently succeeding with no actual write. This is a disclosed, current gap, not a bug.
+
+## MCP transport - stdio, not streamable-HTTP
+
+claude_desktop_config.json has a known issue where a `url` field for streamable-HTTP transport can cause Claude Desktop to silently corrupt the config file on save. stdio is the transport claude_desktop_config.json reliably supports, so the MCP server defaults to stdio (a --http flag remains available for manual/script testing against the HTTP transport directly).
+
+## No agent-orchestration / tool-dispatch loop
+
+The toolkit's suggested "plain functions plus a tool-dispatch loop" pattern was only half-adopted: plain functions, yes; a dispatch loop, deliberately no. A dispatch loop means the model decides which function runs next - this conflicts with the project's core rule that code always decides what happens and the model only narrates a fact already computed.
+
+## Seed data volume - not increased late in the build
+
+items is already at the brief's stated 25-40 cap (40). Other fields have some numeric headroom, but every golden case's ground truth, and all 10 deliberate difficulties, are hand-verified against the exact current seed data - adding more risks breaking that verification for no real proof-value gain, since the required difficulties are already all present and already demonstrated across every interface (terminal, MCP, Streamlit).
+
+## Unit tests vs. golden cases - deliberately different, not redundant
+
+Golden cases test end-to-end behavioral correctness against real seed data (may call the LLM). The pytest suite (tests/) tests individual parsing/validation functions in isolation with hand-crafted edge cases (no LLM call) - specifically reference-or-drop, malformed-JSON parsing, and the causal-assertion guard. Both layers are kept because they catch different classes of failure.
