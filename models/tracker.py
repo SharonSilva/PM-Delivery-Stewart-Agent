@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional 
 from pydantic import BaseModel
 
-class   WorkItem(BaseModel):
+class   WorkItem(BaseModel):                                                      
     """ A single tracker item that is normalized. Status is kept as the raw
         string from the source system and normalization into a clean enum happens
         in the deterministic engine, not here, so this model can represent messy real world

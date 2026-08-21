@@ -23,6 +23,20 @@ def _todays_nudge_count(person: str, today: date, notifications: list[dict]) -> 
     return count
 
 
+def _already_escalated_today(commitment_id: str, today: date, notifications: list[dict]) -> bool:
+    """Same dedup principle as the nudge cap: an escalation for this
+    exact commitment, on this exact date, should only ever be logged
+    once - re-running the check the same day must not create
+    duplicate escalation records."""
+    for n in notifications:
+        if n["kind"] != "escalation" or n["commitment_id"] != commitment_id:
+            continue
+        n_date = date.fromisoformat(n["timestamp"][:10])
+        if n_date == today:
+            return True
+    return False
+
+
 def _read_notification_log(log_path: str = "storage/notifications.jsonl") -> list[dict]:
     import json
     from pathlib import Path
@@ -92,6 +106,10 @@ def run_commitment_check(as_of_date: date, notification_adapter) -> dict:
             existing_log.append(record.model_dump(mode="json"))
 
         elif classification == "escalate":
+            if _already_escalated_today(c.id, as_of_date, existing_log):
+                capped_skips.append(c.id)
+                continue
+
             record = NotificationRecord(
                 id=f"ESCALATE-{c.id}-{as_of_date.isoformat()}",
                 kind="escalation",
