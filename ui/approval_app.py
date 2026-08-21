@@ -6,6 +6,21 @@ project uses - no new business logic lives in this file.
 
 Run with: streamlit run ui/approval_app.py
 """
+import os
+import sys
+from pathlib import Path
+
+# Streamlit Cloud (and any deployment that runs this file directly,
+# not from the project root) does not guarantee the working
+# directory is the project root, nor put it on the import path.
+# Two things depend on this: importing local packages (adapters/,
+# storage/), and every mock adapter's relative seed_data/ path,
+# which is resolved at file-open time, not import time. Same root
+# cause and fix already proven for mcp_server/server.py.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+os.chdir(PROJECT_ROOT)
+sys.path.insert(0, str(PROJECT_ROOT))
+
 import streamlit as st
 
 from adapters.adapter_factory import get_risk_log_adapter, get_proposal_store_adapter
