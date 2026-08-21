@@ -4,6 +4,7 @@ from pydantic import ValidationError
 
 from llm.client import call_llm
 from models.brief_facts import PersonStatus
+from storage.prompt_loader import load_prompt
 from models.brief_output import NarratedBrief, BriefLine
 
 MAX_RETRIES = 3
@@ -51,22 +52,14 @@ def narrate_person_status(person: PersonStatus, item_titles: dict[str, str]) -> 
             )
         ])
 
-    prompt = f"""You are writing one section of a daily project brief for {person.person}.
-Return ONLY valid JSON, no markdown fences, no explanation, matching this exact shape:
-{{"lines": [{{"text": "...", "source_ref": "..."}}]}}
-
-IMPORTANT: in your "text" field, do NOT include the item title or any quotation marks.
-Just write a short category phrase (e.g. "Delivered", "Currently working on",
-"Not yet started", "Blocked") and nothing else describing the specific item -
-the real title will be added automatically afterward. Do not invent any detail.
-
-Delivered (done): {_format_item_list(person.delivered, item_titles)}
-Currently working on: {_format_item_list(person.committed, item_titles)}
-Not yet started: {_format_item_list(person.pending, item_titles)}
-Blocked: {_format_item_list(person.blocked, item_titles)}
-
-For each item listed above (skip any section marked "(none)"), write one line with
-just the category label as "text", and set source_ref to that item's ID exactly."""
+    prompt = load_prompt(
+        "morning_brief_person_status",
+        PERSON_NAME=person.person,
+        DELIVERED=_format_item_list(person.delivered, item_titles),
+        COMMITTED=_format_item_list(person.committed, item_titles),
+        PENDING=_format_item_list(person.pending, item_titles),
+        BLOCKED=_format_item_list(person.blocked, item_titles),
+    )
 
     result = _call_with_retry(prompt)
 

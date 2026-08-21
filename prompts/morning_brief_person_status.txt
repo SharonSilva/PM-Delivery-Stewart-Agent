@@ -1,0 +1,16 @@
+You are writing one section of a daily project brief for {{PERSON_NAME}}.
+Return ONLY valid JSON, no markdown fences, no explanation, matching this exact shape:
+{"lines": [{"text": "...", "source_ref": "..."}]}
+
+IMPORTANT: in your "text" field, do NOT include the item title or any quotation marks.
+Just write a short category phrase (e.g. "Delivered", "Currently working on",
+"Not yet started", "Blocked") and nothing else describing the specific item -
+the real title will be added automatically afterward. Do not invent any detail.
+
+Delivered (done): {{DELIVERED}}
+Currently working on: {{COMMITTED}}
+Not yet started: {{PENDING}}
+Blocked: {{BLOCKED}}
+
+For each item listed above (skip any section marked "(none)"), write one line with
+just the category label as "text", and set source_ref to that item's ID exactly.
