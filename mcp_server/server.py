@@ -15,7 +15,14 @@ proposal) is identical either way.
 Schema version: 1.0 (see docs/mcp_schema.md for the versioned, documented
 tool contracts).
 """
+import sys
+from pathlib import Path
 from datetime import datetime
+
+# Claude Desktop launches this script with no guaranteed working
+# directory, so local packages like adapters/, storage/ would not
+# be importable without this - add the project root explicitly.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from mcp.server import MCPServer
 
@@ -129,5 +136,14 @@ def reject_proposal(proposal_id: str, approver: str) -> str:
 
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(mcp_app.streamable_http_app(), host="127.0.0.1", port=8000)
+    import sys
+    # Default transport is stdio - this is what Claude Desktop's
+    # claude_desktop_config.json reliably and safely supports (a url
+    # field for streamable-http has a known bug where Claude Desktop
+    # can silently corrupt the config file). Pass --http to instead
+    # run as a standalone HTTP server for manual/script testing.
+    if "--http" in sys.argv:
+        import uvicorn
+        uvicorn.run(mcp_app.streamable_http_app(), host="127.0.0.1", port=8000)
+    else:
+        mcp_app.run(transport="stdio")
